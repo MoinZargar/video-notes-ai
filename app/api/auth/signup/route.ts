@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import db from '../../../../lib/prisma';
-import { signUpSchema } from '../../../../lib/schemas/auth.schema';
+import db from '@/lib/prisma';
+import { signUpSchema } from '@/lib/schemas/auth.schema';
 import bcrypt from 'bcrypt';
+import { Provider } from '@prisma/client';
 
 
 export async function POST(req: Request) {
@@ -34,7 +35,8 @@ export async function POST(req: Request) {
       data: {
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        provider:Provider.CREDENTIALS
       }
     });
 
