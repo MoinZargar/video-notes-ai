@@ -87,7 +87,7 @@ export const authOptions: NextAuthOptions = {
       }
     ) {
       try {
-      
+
         if (account?.provider === 'google' || account?.provider === 'github') {
           const existingUser = await db.user.findUnique({
             where: { email: user.email! }
@@ -122,24 +122,38 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
     },
-    async session({ session, token}
+    async session({ session,token}
       :{
         session:Session,
-        token: JWT
+        user:User,
+        token: JWT,
+
+
       }
     ) {
-      session.user.id = token.sub 
+      const user = await db.user.findUnique({
+        where:{
+          email:session.user.email
+        }
+      });
+      if(!user){
+        throw new Error("User not found");
+      }
+      session.user.id = String(user.id);
+      session.user.name = user.name;
+      session.user.provider = user.provider;
+      session.user.isOAuthUser = user.isOAuthUser;
       return session;
       
     },
-    async jwt({ token, user, account }:
+    async jwt({ token,  account }:
       {
         token: JWT,
-        user: User,
         account: Account | null
 
       }
     ) {
+    
       if (account) {
         token.provider = account.provider;
       }
