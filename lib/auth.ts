@@ -5,7 +5,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import GitHubProvider from 'next-auth/providers/github'
 import bcrypt from "bcrypt"
 import { z } from "zod"
-import { signInSchema } from "../lib/schemas/auth.schema"
+import { signInSchema } from "./schemas/authSchema"
 import db from "../lib/prisma"
 import { Provider } from "@prisma/client"
 import { AuthUser } from "@/types/next-auth"

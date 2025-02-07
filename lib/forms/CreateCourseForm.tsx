@@ -13,32 +13,32 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { addCourseSchema } from "@/lib/schemas/add-course.schema";
+import { createCourseSchema } from "@/lib/schemas/createCourseSchema";
 import ErrorMessage from "@/components/ErrorMessage";
-import { addCourse } from "@/app/actions/addCourseAction";
+import { createCourse } from "@/app/actions/createCourseAction";
 import LoadingButton from "@/components/LoadingButton";
 import { Course } from "@prisma/client";
 
-interface AddCourseFormProps {
+interface CreateCourseFormProps {
     onSuccess: (course:Course) => void;
 }
 
-export default function AddCourseForm({ onSuccess }: AddCourseFormProps) {
+export default function CreateCourseForm({ onSuccess }: CreateCourseFormProps) {
     const [globalError, setGlobalError] = useState<string>("");
     const [successMessage, setSuccessMessage] = useState<string>("");
-    const form = useForm<z.infer<typeof addCourseSchema>>({
-        resolver: zodResolver(addCourseSchema),
+    const form = useForm<z.infer<typeof createCourseSchema>>({
+        resolver: zodResolver(createCourseSchema),
         defaultValues: {
             name: "",
             description: "",
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof addCourseSchema>) => {
+    const onSubmit = async (values: z.infer<typeof createCourseSchema>) => {
         try {
             setGlobalError("");
             setSuccessMessage("");
-            const response = await addCourse({
+            const response = await createCourse({
                 ...values,
                 name: values.name.toLowerCase(),
                 description: values.description?.toLowerCase()

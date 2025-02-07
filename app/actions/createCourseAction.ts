@@ -1,5 +1,5 @@
 "use server"
-import { addCourseSchema } from "@/lib/schemas/add-course.schema";
+import { createCourseSchema } from "@/lib/schemas/createCourseSchema";
 import db from "@/lib/prisma";
 import { z } from "zod";
 import { authOptions } from "@/lib/auth";
@@ -8,7 +8,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 
 
-export async function addCourse(values: z.infer<typeof addCourseSchema>) {
+export async function createCourse(values: z.infer<typeof createCourseSchema>) {
     try {
         
         const session = await getServerSession(authOptions);
@@ -17,7 +17,7 @@ export async function addCourse(values: z.infer<typeof addCourseSchema>) {
         }
         
         const { name, description } = values;
-        const validatedFields = addCourseSchema.safeParse(values);
+        const validatedFields = createCourseSchema.safeParse(values);
         if (!validatedFields.success) {
 
             return { error: "Invalid fields" };

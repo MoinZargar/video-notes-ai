@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { signInSchema } from "@/lib/schemas/auth.schema";
+import { signInSchema } from "@/lib/schemas/authSchema";
 import LoadingButton from "@/components/LoadingButton";
 import ErrorMessage from "@/components/ErrorMessage";
 import Link from "next/link";

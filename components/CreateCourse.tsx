@@ -4,14 +4,15 @@ import { SidebarMenuButton } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
-import AddCourseForm from "@/lib/forms/AddCourseForm"
+import CreateCourseForm from "@/lib/forms/CreateCourseForm"
 import { useState } from "react"
 import { Course } from "@prisma/client"
 
-interface AddCourseProps {
+
+interface CreateCourseProps {
     onCourseAdded: (newCourse: Course) => void;
 }
-export default function AddCourse({ onCourseAdded }: AddCourseProps) {
+export default function CreateCourse({ onCourseAdded }: CreateCourseProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
 
 
@@ -41,7 +42,7 @@ export default function AddCourse({ onCourseAdded }: AddCourseProps) {
               <DialogTitle>Add New Course</DialogTitle>
             </VisuallyHidden>
           </DialogHeader>
-          <AddCourseForm onSuccess={handleFormSuccess} />
+          <CreateCourseForm onSuccess={handleFormSuccess} />
         </DialogContent>
       </Dialog>
     )

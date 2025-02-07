@@ -1,0 +1,56 @@
+import { NextResponse } from "next/server";
+import { generateNotes } from "@/lib/notes";
+import db from "@/lib/prisma";
+import { NotesRequestBody } from "@/types/notes";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+
+export async function POST(req: Request) {
+
+    try {
+        const body: NotesRequestBody = await req.json();
+        const { transcript, videoUrl } = body;
+        if (!transcript || !videoUrl) {
+            return NextResponse.json({ error: 'Transcript and videoUrl is required' }, { status: 400 });
+        }
+        const notes = await generateNotes(transcript);
+        const session= await getServerSession(authOptions)
+        if (!session) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+        const userId = Number(session.user.id);
+        const course = await db.course.findFirst({
+            where: {
+                userId: userId
+            }
+        })
+        if (!course) {
+            return NextResponse.json({ error: 'Course not found' }, { status: 404 });
+        }
+
+        if (!notes) {
+            return NextResponse.json({ error: 'Failed to generate notes' }, { status: 400 });
+        }
+
+
+        const note = await db.notes.create({
+            data: {
+                videoUrl: videoUrl,
+                notes: notes,
+                userId: userId,
+                courseId: course.id
+            }
+        })
+        
+
+        return NextResponse.json({
+            success: true,
+            notes: notes
+        }, { status: 200 });
+
+    } catch (error: any) {
+        console.log(error)
+        return NextResponse.json({ error:  error }, { status: 500 });
+    }
+
+}

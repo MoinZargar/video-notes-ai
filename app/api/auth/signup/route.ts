@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/prisma';
-import { signUpSchema } from '@/lib/schemas/auth.schema';
+import { signUpSchema } from '@/lib/schemas/authSchema';
 import bcrypt from 'bcrypt';
 import { Provider } from '@prisma/client';
 

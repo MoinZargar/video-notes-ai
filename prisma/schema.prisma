@@ -21,6 +21,7 @@ model User {
   provider      Provider?
   isOAuthUser   Boolean   @default(false)
   courses       Course[]
+  notes         Notes[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -30,11 +31,28 @@ model Course {
   name          String @unique
   description   String?
   userId        Int
+  notes         Notes[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  user          User   @relation(fields: [userId], references: [id])
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId]) 
 }
 
+model Notes {
+  id            Int    @id @default(autoincrement())
+  videoUrl      String
+  notes         String
+  courseId      Int
+  userId        Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  course        Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([courseId]) 
+  @@index([userId])  
+}
 enum Provider {
     CREDENTIALS
     GOOGLE
