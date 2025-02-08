@@ -22,6 +22,13 @@ export async function createCourse(values: z.infer<typeof createCourseSchema>) {
 
             return { error: "Invalid fields" };
         }
+        //check if course already exists
+        const courseExists = await db.course.findFirst({
+            where: { name, userId: Number(session.user.id) }
+        })
+        if (courseExists) {
+            return { error: "Course already exists" }
+        }
         const course = await db.course.create({
             data: { name, description, userId: Number(session.user.id) },
         });

@@ -17,8 +17,7 @@ export const transcribeVideo = async (videoUrl: string) => {
 
 
     } catch (error:any) {
-        console.log(error.response)
-        throw error
+        throw new Error(error?.response?.data?.message || "Failed to transcribe video")
     }
 }
 

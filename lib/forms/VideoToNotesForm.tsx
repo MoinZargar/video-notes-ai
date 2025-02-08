@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { videoNotesSchema } from "@/lib/schemas/videoNotesSchema"
 import type { VideoNotesFormData } from "@/types/forms"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -14,6 +13,10 @@ import { Course } from "@prisma/client"
 import { fetchCourses } from "@/app/actions/fetchCourseAction"
 import { createCourse } from "@/app/actions/createCourseAction"
 import axios from "axios"
+import { LoaderPinwheelIcon } from "lucide-react"
+import LoadingButton from "@/components/LoadingButton"
+import { useRouter } from "next/navigation"
+import { transcript } from "@/lib/constants"
 
 export default function VideoToNotesForm({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [globalError, setGlobalError] = useState<string>("")
@@ -21,6 +24,7 @@ export default function VideoToNotesForm({ isOpen, onClose }: { isOpen: boolean;
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
+  const router = useRouter()
   useEffect(() => {
     const loadCourses = async () => {
       try {
@@ -47,6 +51,7 @@ export default function VideoToNotesForm({ isOpen, onClose }: { isOpen: boolean;
   const onSubmit = async (values: VideoNotesFormData) => {
     try {
       setGlobalError("")
+      //create course if it doesn't exist
      if(courses.length === 0){
        const response = await createCourse({
         name: values.course,
@@ -57,23 +62,36 @@ export default function VideoToNotesForm({ isOpen, onClose }: { isOpen: boolean;
        }
       
      }
-     const transcriptResponse = await axios.post("/api/transcribe", {
-      videoUrl: values.videoUrl
-     })
+     //transcribe video
+
+    //  const transcriptResponse = await axios.post("/api/transcribe", {
+    //   videoUrl: values.videoUrl
+    //  })
+    const transcriptResponse = {
+      data: {
+        transcript: {
+          transcription: transcript
+        }
+      }
+    }
+     //create notes from transcript
      if(transcriptResponse){
       console.log("Transcript Response ",transcriptResponse.data.transcript.transcription)
       const notesResponse = await axios.post("/api/notes", {
         transcript: transcriptResponse?.data?.transcript?.transcription,
-        videoUrl: values.videoUrl
+        videoUrl: values.videoUrl,
+        course: values.course
       })
-      console.log("Notes Response ",notesResponse)
+      //redirect to notes page
 
+      if(notesResponse){
+        onClose()
+        router.push(`/notes/${values.course}`)
+      }
      }
 
-  
-
     } catch (error: any) {
-      setGlobalError(error?.message || "Failed to generate notes")
+      setGlobalError("Something went wrong. Please try again.")
     }
 
 
@@ -98,6 +116,13 @@ export default function VideoToNotesForm({ isOpen, onClose }: { isOpen: boolean;
             </svg>
           </div>
         </div>
+
+        {form.formState.isSubmitting && (
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <LoaderPinwheelIcon className="h-6 w-6 animate-spin text-blue-500" />
+            <p className="text-base font-medium text-blue-600">Please wait, processing your video. This may take a few minutes...</p>
+          </div>
+        )}
 
         {globalError && <div className="text-red-500 text-sm text-center mb-6">{globalError}</div>}
 
@@ -147,7 +172,7 @@ export default function VideoToNotesForm({ isOpen, onClose }: { isOpen: boolean;
                       </FormControl>
                       <SelectContent className="max-h-[200px] overflow-y-auto">
                         {courses.map((course) => (
-                          <SelectItem key={course.id} value={course.id.toString()}>
+                          <SelectItem key={course.id} value={course.name}>
                             {course.name}
                           </SelectItem>
                         ))}
@@ -160,9 +185,7 @@ export default function VideoToNotesForm({ isOpen, onClose }: { isOpen: boolean;
             />
 
             <div className="pt-4">
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Generating..." : "Generate Notes"}
-              </Button>
+              <LoadingButton pending={form.formState.isSubmitting}>Generate Notes</LoadingButton>
             </div>
           </form>
         </Form>

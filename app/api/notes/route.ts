@@ -5,11 +5,12 @@ import { NotesRequestBody } from "@/types/notes";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-export async function POST(req: Request) {
+export async function POST(req: Request){
 
     try {
         const body: NotesRequestBody = await req.json();
-        const { transcript, videoUrl } = body;
+        console.log("Body ",body)
+        const { transcript, videoUrl, course } = body;
         if (!transcript || !videoUrl) {
             return NextResponse.json({ error: 'Transcript and videoUrl is required' }, { status: 400 });
         }
@@ -19,14 +20,16 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
         const userId = Number(session.user.id);
-        const course = await db.course.findFirst({
+        const Course = await db.course.findFirst({
             where: {
-                userId: userId
+                userId: userId,
+                name: course
             }
         })
-        if (!course) {
+        if (!Course) {
             return NextResponse.json({ error: 'Course not found' }, { status: 404 });
         }
+        const courseId = Number(Course.id);        
 
         if (!notes) {
             return NextResponse.json({ error: 'Failed to generate notes' }, { status: 400 });
@@ -36,9 +39,9 @@ export async function POST(req: Request) {
         const note = await db.notes.create({
             data: {
                 videoUrl: videoUrl,
-                notes: notes,
+                content: notes,
                 userId: userId,
-                courseId: course.id
+                courseId: courseId
             }
         })
         
@@ -48,9 +51,9 @@ export async function POST(req: Request) {
             notes: notes
         }, { status: 200 });
 
-    } catch (error: any) {
-        console.log(error)
-        return NextResponse.json({ error:  error }, { status: 500 });
+    } catch(error:any) {
+        console.log(error.stack)
+        return NextResponse.json({ error: error }, { status: 500 });
     }
 
 }

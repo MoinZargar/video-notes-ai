@@ -28,7 +28,7 @@ model User {
 
 model Course {
   id            Int    @id @default(autoincrement())
-  name          String @unique
+  name          String
   description   String?
   userId        Int
   notes         Notes[]
@@ -42,7 +42,7 @@ model Course {
 model Notes {
   id            Int    @id @default(autoincrement())
   videoUrl      String
-  notes         String
+  content       String  
   courseId      Int
   userId        Int
   createdAt     DateTime  @default(now())

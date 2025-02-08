@@ -22,11 +22,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(response, { status: 200 });
 
-  } catch (error) {
-    console.error('Transcription error:', error);
-    return NextResponse.json(
-      { error: error},
-      { status: 500 }
-    );
+  } catch (error:any) {
+    throw new Error(error?.response?.data?.message || "Failed to transcribe video")
   }
 }
