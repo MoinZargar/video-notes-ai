@@ -13,21 +13,29 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Course } from "@prisma/client"
-import AddCourse from "@/components/CreateCourse"
-import { useState } from "react"
+import CreateCourse from "@/components/CreateCourse"
+import { useEffect, useState } from "react"
 import VideoToNotesForm from "@/lib/forms/VideoToNotesForm" 
+import { AppDispatch, RootState } from "@/store/store"
+import { useDispatch, useSelector } from "react-redux"
+import { setCourses } from "@/store/coursesSlice"
 
 export default function AppSidebar({ initialCourses }: { initialCourses: Course[] }) {
-  const [courses, setCourses] = useState<Course[]>(initialCourses || []);
+  
+  const dispatch: AppDispatch = useDispatch();
+  const courses = useSelector((state: RootState) => state.courses.courses);
   const [isVideoNotesOpen, setIsVideoNotesOpen] = useState(false);
-
-  const handleCourseAdded = (newCourse: Course) => {
-    setCourses(prevCourses => Array.isArray(prevCourses) ? [...prevCourses, newCourse] : [newCourse]);
-  }
+  
+  useEffect(() => {
+    if (initialCourses && initialCourses.length > 0 && courses.length === 0) {
+      dispatch(setCourses(initialCourses));
+    }
+  }, [initialCourses, courses.length, dispatch]);
 
   return (
     <>
       <Sidebar className="w-[240px] lg:w-[280px] border-r-0 bg-[#0A0A0A]">
+
         <SidebarHeader className="border-b border-zinc-800/50 p-4 bg-[#0A0A0A]">
           <div className="space-y-8">
             <h2 className="text-2xl font-medium text-white mt-2">VidNotes</h2>
@@ -62,7 +70,7 @@ export default function AppSidebar({ initialCourses }: { initialCourses: Course[
                         asChild
                         className="w-full justify-start px-4 py-2 hover:bg-zinc-800/50 hover:text-white text-zinc-200 transition-colors"
                       >
-                        <Link href="/dashboard">
+                        <Link href={`/notes/${course.name}`}>
                           <BookOpen key={course.name} className="mr-3 h-4 w-4" />
                           {course.name.charAt(0).toUpperCase() + course.name.slice(1)}
                         </Link>
@@ -73,7 +81,7 @@ export default function AppSidebar({ initialCourses }: { initialCourses: Course[
                   <div className="text-zinc-400 px-4 py-2">No courses available</div>
                 )}
                 <SidebarMenuItem>
-                  <AddCourse onCourseAdded={handleCourseAdded} />
+                  <CreateCourse />
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
@@ -84,6 +92,7 @@ export default function AppSidebar({ initialCourses }: { initialCourses: Course[
       <VideoToNotesForm
         isOpen={isVideoNotesOpen} 
         onClose={() => setIsVideoNotesOpen(false)} 
+        courses={courses}
       />
     </>
   )

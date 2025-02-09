@@ -40,13 +40,7 @@ export async function createCourse(values: z.infer<typeof createCourseSchema>) {
 
 
     } catch (error) {
-        if (error instanceof PrismaClientKnownRequestError) {
-           
-            if (error.code === 'P2002') {
-                throw new Error("A course with this name already exists");
-            }
-        }
-        
+        console.log(error)
         throw new Error("Something went wrong while creating the course");
     }
 

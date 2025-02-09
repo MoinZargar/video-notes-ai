@@ -10,7 +10,6 @@ export default async function DashboardLayout({
     children: React.ReactNode;
 }) {
     const courses: Course[] = await fetchCourses()
-
     return (
         <SidebarProvider>
             <main className="flex min-h-screen">

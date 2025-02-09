@@ -9,18 +9,9 @@ import { useState } from "react"
 import { Course } from "@prisma/client"
 
 
-interface CreateCourseProps {
-    onCourseAdded: (newCourse: Course) => void;
-}
-export default function CreateCourse({ onCourseAdded }: CreateCourseProps) {
+
+export default function CreateCourse() {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
-
-
-    const handleFormSuccess = (newCourse: Course) => {
-        setIsDialogOpen(false)
-        onCourseAdded(newCourse)
-    }
-
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -32,17 +23,18 @@ export default function CreateCourse({ onCourseAdded }: CreateCourseProps) {
           >
             <Button variant="ghost" className="w-full justify-start p-0 text-base">
               <Plus className="mr-3 h-4 w-4" />
-              Add new
+              Add Course
             </Button>
           </SidebarMenuButton>
         </DialogTrigger>
+
         <DialogContent className="bg-white">
           <DialogHeader>
             <VisuallyHidden>
               <DialogTitle>Add New Course</DialogTitle>
             </VisuallyHidden>
           </DialogHeader>
-          <CreateCourseForm onSuccess={handleFormSuccess} />
+          <CreateCourseForm />
         </DialogContent>
       </Dialog>
     )

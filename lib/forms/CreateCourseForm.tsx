@@ -18,14 +18,15 @@ import ErrorMessage from "@/components/ErrorMessage";
 import { createCourse } from "@/app/actions/createCourseAction";
 import LoadingButton from "@/components/LoadingButton";
 import { Course } from "@prisma/client";
+import { useDispatch } from "react-redux";
+import { addCourse } from "@/store/coursesSlice";
 
-interface CreateCourseFormProps {
-    onSuccess: (course:Course) => void;
-}
 
-export default function CreateCourseForm({ onSuccess }: CreateCourseFormProps) {
+
+export default function CreateCourseForm() {
     const [globalError, setGlobalError] = useState<string>("");
     const [successMessage, setSuccessMessage] = useState<string>("");
+    const dispatch = useDispatch();
     const form = useForm<z.infer<typeof createCourseSchema>>({
         resolver: zodResolver(createCourseSchema),
         defaultValues: {
@@ -46,7 +47,7 @@ export default function CreateCourseForm({ onSuccess }: CreateCourseFormProps) {
             if(response.success && response.course){
                 setSuccessMessage(response.success);
                 form.reset();
-                onSuccess(response.course);
+                dispatch(addCourse(response.course));
             }
             else{
                 setGlobalError(response.error || "Something went wrong");

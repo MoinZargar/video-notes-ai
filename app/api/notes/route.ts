@@ -9,7 +9,6 @@ export async function POST(req: Request){
 
     try {
         const body: NotesRequestBody = await req.json();
-        console.log("Body ",body)
         const { transcript, videoUrl, course } = body;
         if (!transcript || !videoUrl) {
             return NextResponse.json({ error: 'Transcript and videoUrl is required' }, { status: 400 });

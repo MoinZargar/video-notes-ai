@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { transcribeVideo } from '@/lib/transcribe';
-import { TranscribeRequestBody, TranscribeResponse } from '@/types/transcribe';
+import { TranscribeRequestBody } from '@/types/transcribe';
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<NextResponse> {
   try {
     const body: TranscribeRequestBody = await req.json();
     const { videoUrl } = body;
@@ -15,10 +15,14 @@ export async function POST(req: Request) {
     }
 
     const transcript = await transcribeVideo(videoUrl);
-    const response: TranscribeResponse = {
+    if (!transcript) {
+      return NextResponse.json({ error: 'Failed to transcribe video' }, { status: 500 });
+    }
+    const response= {
       success: true,
       transcript,
     };
+
 
     return NextResponse.json(response, { status: 200 });
 
