@@ -15,8 +15,9 @@ import axios from "axios"
 import { LoaderPinwheelIcon } from "lucide-react"
 import LoadingButton from "@/components/LoadingButton"
 import { useRouter } from "next/navigation"
+import { SerializedCourse } from "@/types/course"
 
-export default function VideoToNotesForm({ isOpen, onClose, courses }: { isOpen: boolean; onClose: () => void; courses: Course[] }) {
+export default function VideoToNotesForm({ isOpen, onClose, courses }: { isOpen: boolean; onClose: () => void; courses: SerializedCourse[] }) {
   const [globalError, setGlobalError] = useState<string>("")
   const router = useRouter()
 

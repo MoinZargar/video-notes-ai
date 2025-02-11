@@ -8,10 +8,12 @@ export const transcribeVideo = async (videoUrl: string): Promise<string> => {
         const transcription = transcript
             .map(entry => entry.text)
             .join(' ');
+        if (!transcription) {
+            throw new Error("Failed to transcribe video")
+        }
         return transcription;
 
     } catch (error:any) {
-      console.log(error)
         throw new Error(error?.message || "Failed to transcribe video")
     }
 }

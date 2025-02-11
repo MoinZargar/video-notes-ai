@@ -1,83 +1,165 @@
-import React from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+'use client'
 
-export default function ChatWindow({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-     return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xl h-[600px] p-0">
-        <div className="flex flex-col h-full">
+import * as React from 'react'
+import { X, Maximize2 } from 'lucide-react'
+import { FaRegWindowMinimize } from "react-icons/fa";
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion'
+import AIChatForm from '@/lib/forms/AIChatForm'
+import { ChatMessage } from '@/types/chat'
+import ErrorMessage from '@/components/ErrorMessage'
+import { chatWindowSizes } from '@/lib/constants'
+import { ChatWindowSizeType } from '@/types/chat'
 
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b bg-black text-white">
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-semibold">Chat with Alice</span>
+interface ChatWindowProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export default function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
+  const [messages, setMessages] = React.useState<ChatMessage[]>([])
+  const [isMaximized, setIsMaximized] = React.useState(false)
+  const [isMinimized, setIsMinimized] = React.useState(false)
+  const constraintsRef = React.useRef(null)
+  const messagesEndRef = React.useRef<HTMLDivElement>(null)
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" })
+  }
+
+  React.useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  const handleMessage = (message: ChatMessage) => {
+    setMessages(prev => [...prev, message])
+  }
+
+  const getCurrentSize = (): ChatWindowSizeType => {
+    if (isMinimized) return chatWindowSizes.minimized
+    if (isMaximized) return chatWindowSizes.maximized
+    return chatWindowSizes.default
+  }
+
+  const handleMaximize = () => {
+    setIsMaximized(!isMaximized)
+    setIsMinimized(false)
+  }
+
+  const handleMinimize = () => {
+    setIsMinimized(!isMinimized)
+    setIsMaximized(false)
+  }
+
+  if (!isOpen) return null
+  return (
+    <div ref={constraintsRef} className="fixed inset-0 pointer-events-none">
+      <motion.div
+        drag={true}
+        dragConstraints={constraintsRef}
+        dragMomentum={false}
+        dragElastic={0}
+        initial={{ y: 0 }}
+        animate={{
+          width: getCurrentSize().width,
+          height: getCurrentSize().height,
+        }}
+        transition={{ duration: 0.2 }}
+        className={cn(
+          "fixed pointer-events-auto right-3 top-14",
+        )}
+      >
+        <Card className="h-full flex flex-col shadow-lg">
+          <CardHeader
+            className="flex flex-row items-center justify-between space-y-0 bg-black text-white p-4 cursor-move"
+          >
+            <div className="flex-1 min-w-0">
+              <h4 className="font-medium truncate">AI Doubt Solver</h4>
             </div>
-            <div className="flex gap-2">
-              <button className="p-1 hover:bg-gray-700 rounded">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M15 3h6v6M14 10l7-7m-7 17H3V3h12" />
-                </svg>
-              </button>
-              <button className="p-1 hover:bg-gray-700 rounded">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 6V18M6 12H18" />
-                </svg>
-              </button>
-              <button className="p-1 hover:bg-gray-700 rounded" onClick={onClose}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Main content */}
-          <div className="flex-1 p-6 flex flex-col items-center justify-center space-y-6 bg-gray-50">
-            <h2 className="text-2xl font-semibold text-center">Meet Alice,</h2>
-            <h3 className="text-xl font-medium text-center">your AI Study Helper</h3>
-            
-            <div className="flex flex-col gap-6 w-full max-w-md">
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white">
-                  ?
-                </div>
-                <p className="flex-1 text-gray-600">
-                  Ask me any study question, anytime, and let's dive into it together.
-                </p>
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white">
-                  💬
-                </div>
-                <p className="flex-1 text-gray-600">
-                  Or, click on a bubble icon to start a focused chat based on a specific note, summary, or exercise.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Input area */}
-          <div className="p-4 border-t">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Message Alice..."
-                className="flex-1 px-4 py-2 rounded-full border focus:outline-none focus:ring-2 focus:ring-black"
-              />
-              <Button 
-                className="rounded-full px-4 bg-black text-white hover:bg-black/90"
+            <div className="flex items-center gap-1 shrink-0">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 hover:bg-zinc-700"
+                onClick={handleMinimize}
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-                </svg>
+                <FaRegWindowMinimize className="h-4 w-4 mb-2" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 hover:bg-zinc-700"
+                onClick={handleMaximize}
+              >
+                <Maximize2 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 hover:bg-zinc-700"
+                onClick={onClose}
+              >
+                <X className="h-4 w-4" />
               </Button>
             </div>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-};
+          </CardHeader>
 
+          {!isMinimized && (
+            <div className="flex flex-col flex-1 overflow-hidden">
+              <CardContent className="flex-1 p-4 overflow-y-auto">
+                {messages.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-full space-y-4 text-center">
+                    <h2 className="text-xl sm:text-2xl font-semibold">Hello, I'm AI Assistant</h2>
+                    <p className="text-lg sm:text-xl">Have doubts in your notes?</p>
+                    <div className="space-y-4 max-w-sm">
+                      <p className="text-muted-foreground">
+                        Ask me any doubts related to your notes, and I will help you resolve them.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {messages.map((msg, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "flex w-max max-w-[80%] rounded-lg px-4 py-2",
+                          msg.role === 'user'
+                            ? "ml-auto bg-black text-white"
+                            : "bg-muted"
+                        )}
+                      >
+                        {msg?.parts[0]?.text}
+                      </div>
+                    ))}
+                    <div ref={messagesEndRef} />
+                  </div>
+                )}
+
+                {isLoading && (
+                  <div className="flex items-center space-x-2 bg-muted rounded-lg px-4 py-2 w-max mt-4">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                    <span className="text-sm text-muted-foreground">AI is thinking...</span>
+                  </div>
+                )}
+                {error && <ErrorMessage error={error} />}
+              </CardContent>
+
+              <div className="p-4 border-t">
+                <AIChatForm onMessage={handleMessage} history={messages} setIsLoading={setIsLoading} setError={setError} />
+              </div>
+            </div>
+          )}
+        </Card>
+      </motion.div>
+    </div>
+  )
+}

@@ -28,7 +28,13 @@ export default function AppSidebar({ initialCourses }: { initialCourses: Course[
   
   useEffect(() => {
     if (initialCourses && initialCourses.length > 0 && courses.length === 0) {
-      dispatch(setCourses(initialCourses));
+      const serializedCourses = initialCourses.map(course => ({
+        ...course,
+        createdAt: course.createdAt.toISOString(),
+        updatedAt: course.updatedAt.toISOString(),
+      }));
+      
+      dispatch(setCourses(serializedCourses));
     }
   }, [initialCourses, courses.length, dispatch]);
 

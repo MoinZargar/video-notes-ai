@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Course } from '@prisma/client';
+import { SerializedCourse } from '@/types/course';
 
 interface CoursesState {
-  courses: Course[];
+  courses: SerializedCourse[];
 }
 
 const initialState: CoursesState = {
@@ -14,11 +14,11 @@ const coursesSlice = createSlice({
   initialState,
   reducers: {
     
-    setCourses: (state, action: PayloadAction<Course[]>) => {
+    setCourses: (state, action: PayloadAction<SerializedCourse[]>) => {
       state.courses = action.payload;
     },
     
-    addCourse: (state, action: PayloadAction<Course>) => {
+    addCourse: (state, action: PayloadAction<SerializedCourse>) => {
       state.courses.push(action.payload);
     },
   },

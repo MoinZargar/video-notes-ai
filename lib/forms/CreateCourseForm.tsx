@@ -47,7 +47,13 @@ export default function CreateCourseForm() {
             if(response.success && response.course){
                 setSuccessMessage(response.success);
                 form.reset();
-                dispatch(addCourse(response.course));
+                const serializedCourse = {
+                    ...response.course,
+                    createdAt: response.course.createdAt.toISOString(),
+                    updatedAt: response.course.updatedAt.toISOString(),
+                };
+                dispatch(addCourse(serializedCourse));
+
             }
             else{
                 setGlobalError(response.error || "Something went wrong");
