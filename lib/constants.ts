@@ -1,4 +1,5 @@
 import { ChatWindowSizeType } from '@/types/chat'
+import { PdfStyle } from '@/types/pdf';
 
 export const prompt = `Generate comprehensive and detailed notes from the following transcript. Provide in-depth explanations for each concept while maintaining the transcript's level of detail and including all provided examples.
 
@@ -50,4 +51,23 @@ export const chatWindowSizes: Record<string, ChatWindowSizeType> = {
     width: 'min(90vw, 800px)',
     height: 'min(90vh, 700px)'
   }
+}
+
+export const pdfStyles: Record<string, PdfStyle> = {
+  h1: { fontSize: 24, bold: true, margin: [0, 10, 0, 0] },
+  h2: { fontSize: 20, bold: true, margin: [0, 8, 0, 0] },
+  h3: { fontSize: 16, bold: true, margin: [0, 6, 0, 0] },
+  p: { fontSize: 12, margin: [5, 5, 0, 0] },
+  code: {
+    font: 'Courier',
+    background: '#f5f5f5',
+    margin: [0, 5, 0, 0],
+
+  },
+  blockquote: {
+    italics: true,
+    color: '#555',
+    margin: [10, 5, 0, 5],
+    background: '#f9f9f9',
+  },
 }

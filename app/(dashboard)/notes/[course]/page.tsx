@@ -16,7 +16,7 @@ export default async function NotesPage({ params }: { params: { course: string }
             Your lecture notes and materials
           </p>
         </div>
-        <NotesViewer notes={notes} />
+        <NotesViewer notes={notes} course={course} />
       </div>
     </div>
   )

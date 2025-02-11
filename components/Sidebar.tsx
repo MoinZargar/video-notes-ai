@@ -41,7 +41,6 @@ export default function AppSidebar({ initialCourses }: { initialCourses: Course[
   return (
     <>
       <Sidebar className="w-[240px] lg:w-[280px] border-r-0 bg-[#0A0A0A]">
-
         <SidebarHeader className="border-b border-zinc-800/50 p-4 bg-[#0A0A0A]">
           <div className="space-y-8">
             <h2 className="text-2xl font-medium text-white mt-2">VidNotes</h2>
