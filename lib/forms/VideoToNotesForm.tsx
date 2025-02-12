@@ -14,10 +14,15 @@ import { createCourse } from "@/app/actions/createCourseAction"
 import axios from "axios"
 import { LoaderPinwheelIcon } from "lucide-react"
 import LoadingButton from "@/components/LoadingButton"
-import { redirect } from "next/navigation";
 import { SerializedCourse } from "@/types/course"
 
-export default function VideoToNotesForm({ isOpen, onClose, courses }: { isOpen: boolean; onClose: () => void; courses: SerializedCourse[] }) {
+interface VideoToNotesFormProps {
+  isOpen: boolean;
+  onClose: () => void;
+  courses: SerializedCourse[];
+}
+
+export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNotesFormProps) {
   const [globalError, setGlobalError] = useState<string>("")
 
   const form = useForm<VideoNotesFormData>({

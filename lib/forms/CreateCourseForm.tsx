@@ -20,6 +20,7 @@ import LoadingButton from "@/components/LoadingButton";
 import { Course } from "@prisma/client";
 import { useDispatch } from "react-redux";
 import { addCourse } from "@/store/coursesSlice";
+import { CreateCourseFormData } from "@/types/forms";
 
 
 
@@ -27,7 +28,7 @@ export default function CreateCourseForm() {
     const [globalError, setGlobalError] = useState<string>("");
     const [successMessage, setSuccessMessage] = useState<string>("");
     const dispatch = useDispatch();
-    const form = useForm<z.infer<typeof createCourseSchema>>({
+    const form = useForm<CreateCourseFormData>({
         resolver: zodResolver(createCourseSchema),
         defaultValues: {
             name: "",

@@ -1,14 +1,13 @@
 "use server"
 import { createCourseSchema } from "@/lib/schemas/createCourseSchema";
 import db from "@/lib/prisma";
-import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { CreateCourseFormData } from "@/types/forms";
 
 
 
-export async function createCourse(values: z.infer<typeof createCourseSchema>) {
+export async function createCourse(values: CreateCourseFormData) {
     try {
         
         const session = await getServerSession(authOptions);
@@ -40,8 +39,7 @@ export async function createCourse(values: z.infer<typeof createCourseSchema>) {
 
 
     } catch (error) {
-        console.log(error)
-        throw new Error("Something went wrong while creating the course");
+        return { error: "Failed to create course" };
     }
 
 }

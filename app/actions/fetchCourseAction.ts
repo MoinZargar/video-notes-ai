@@ -7,16 +7,17 @@ import { Course } from "@prisma/client"
 export async function fetchCourses(): Promise<Course[]> {
         try {
             const session = await getServerSession(authOptions)
+            if (!session?.user) {
+              return []
+            }
+            const userId = Number(session?.user.id)
             const courses = await db.course.findMany({
               where: {
-                userId: Number(session?.user.id)
+                userId: userId
               }
             })
             return courses
         } catch (error) {
-            console.error('Error in fetchCourses:', error)
             return []
         }
-
-
 }

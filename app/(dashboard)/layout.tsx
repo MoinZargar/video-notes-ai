@@ -12,7 +12,7 @@ export default async function DashboardLayout({
     const courses: Course[] = await fetchCourses()
     return (
         <SidebarProvider>
-            <main className="flex min-h-screen">
+            <main className="flex min-h-screen w-full">
                 <Sidebar initialCourses={courses} />
                 <div className="flex-1">
                     <SidebarTrigger />

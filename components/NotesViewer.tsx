@@ -89,7 +89,7 @@ export default function NotesViewer({ notes, course }: NotesViewerProps) {
               <div className="prose prose-zinc dark:prose-invert max-w-none">
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
-                  className="text-zinc-700 dark:text-zinc-300 leading-relaxed text-justify"
+                  className="text-black leading-relaxed text-justify"
                 >
                   {note.content}
                 </ReactMarkdown>

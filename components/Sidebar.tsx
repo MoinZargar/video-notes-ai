@@ -20,7 +20,11 @@ import { AppDispatch, RootState } from "@/store/store"
 import { useDispatch, useSelector } from "react-redux"
 import { setCourses } from "@/store/coursesSlice"
 
-export default function AppSidebar({ initialCourses }: { initialCourses: Course[] }) {
+interface SidebarProps {
+  initialCourses: Course[];
+}
+
+export default function AppSidebar({ initialCourses }: SidebarProps) {
   
   const dispatch: AppDispatch = useDispatch();
   const courses = useSelector((state: RootState) => state.courses.courses);

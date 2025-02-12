@@ -30,9 +30,7 @@ export default function CreateCourse() {
 
         <DialogContent className="bg-white">
           <DialogHeader>
-            <VisuallyHidden>
               <DialogTitle>Add New Course</DialogTitle>
-            </VisuallyHidden>
           </DialogHeader>
           <CreateCourseForm />
         </DialogContent>
