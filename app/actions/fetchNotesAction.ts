@@ -9,13 +9,13 @@ export default async function fetchNotesAction(course: string): Promise<Notes[]>
    try {
      const session = await getServerSession(authOptions)
      if (!session) {
-         return []
+         throw new Error("Unauthorized request")
      }
      const userId = Number(session.user.id)
      const Course = await db.course.findFirst({ where: { name: course, userId } })
      const courseId = Number(Course?.id)
      if (!courseId || !userId) {
-         return []
+         throw new Error("Invalid course")
      }
      const notes = await db.notes.findMany(
          {
@@ -27,7 +27,7 @@ export default async function fetchNotesAction(course: string): Promise<Notes[]>
      )
      return notes
    } catch (error) {
-      return []
+      throw error;
    }
 
 }

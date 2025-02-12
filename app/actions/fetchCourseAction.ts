@@ -8,7 +8,7 @@ export async function fetchCourses(): Promise<Course[]> {
         try {
             const session = await getServerSession(authOptions)
             if (!session?.user) {
-              return []
+              throw new Error("Unauthorized request")
             }
             const userId = Number(session?.user.id)
             const courses = await db.course.findMany({
@@ -18,6 +18,6 @@ export async function fetchCourses(): Promise<Course[]> {
             })
             return courses
         } catch (error) {
-            return []
+            throw error;
         }
 }

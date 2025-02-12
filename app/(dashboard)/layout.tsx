@@ -9,18 +9,28 @@ export default async function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const courses: Course[] = await fetchCourses()
-    return (
-        <SidebarProvider>
-            <main className="flex min-h-screen w-full">
-                <Sidebar initialCourses={courses} />
-                <div className="flex-1">
-                    <SidebarTrigger />
-                    
-                </div>
-                {children}
+    try {
+        const courses: Course[] = await fetchCourses()
+        return (
+            <SidebarProvider>
+                <main className="flex min-h-screen w-full">
+                    <Sidebar initialCourses={courses} />
+                    <div className="flex-1">
+                        <SidebarTrigger />
 
-            </main>
-        </SidebarProvider>
-    )
+                    </div>
+                    {children}
+
+                </main>
+            </SidebarProvider>
+        )
+    } catch (error: unknown) {
+        return (
+            <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-8 text-center">
+                <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
+                    Error: {(error as Error).message || "We are facing a problem currently. We will be back soon."}
+                </h2>
+            </div>
+        )
+    }
 }

@@ -8,7 +8,7 @@ export default async function getCourseCardAction(): Promise<CourseWithNotesCoun
         const session = await getServerSession(authOptions)
     
         if (!session?.user) {
-            return []
+            throw new Error("Unauthorized request")
         }
         const userId = Number(session?.user?.id)
         const courses = await db.course.findMany({
@@ -26,6 +26,6 @@ export default async function getCourseCardAction(): Promise<CourseWithNotesCoun
         return courses  
         
     } catch (error) {
-        return []
+        throw error;
     }
 }

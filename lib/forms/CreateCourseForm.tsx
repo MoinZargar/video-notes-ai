@@ -36,7 +36,7 @@ export default function CreateCourseForm() {
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof createCourseSchema>) => {
+    const onSubmit = async (values: CreateCourseFormData) => {
         try {
             setGlobalError("");
             setSuccessMessage("");
@@ -54,13 +54,10 @@ export default function CreateCourseForm() {
                     updatedAt: response.course.updatedAt.toISOString(),
                 };
                 dispatch(addCourse(serializedCourse));
-
             }
-            else{
-                setGlobalError(response.error || "Something went wrong");
-            }
+        
         } catch (error:any) {
-            setGlobalError(error?.message);
+            setGlobalError(error?.message || "Something went wrong while creating course");
         }
     };
 

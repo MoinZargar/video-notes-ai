@@ -43,10 +43,6 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
           name: values.course,
           description: "",
         })
-        if (response.error) {
-          setGlobalError(response.error)
-          return
-        }
       }
 
       // Transcribe video
@@ -71,7 +67,7 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
         }
       }
     } catch (error: any) {
-      setGlobalError("Something went wrong. Please try again.")
+      setGlobalError(error?.message || "Something went wrong. Please try again.")
     }
   }
 
