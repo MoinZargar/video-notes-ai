@@ -5,9 +5,8 @@ interface NotesPageProps {
   course: string
 }
 
-export default async function NotesPage( params : NotesPageProps) {
+const NotesPage: React.FC<NotesPageProps> = async ({ course }) => {
   try {
-    const { course } = params
     const notes = await fetchNotesAction(course)
 
     return (
@@ -35,3 +34,5 @@ export default async function NotesPage( params : NotesPageProps) {
     )
   }
 }
+
+export default NotesPage
