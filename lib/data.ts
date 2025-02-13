@@ -1,5 +1,5 @@
 export const headerData = {
-  logo: "AI Notes",
+  logo: "NotesAI",
   menuItems: [
     { name: "Home", href: "/" },
     { name: "Features", href: "#features" },

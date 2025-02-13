@@ -1,27 +1,88 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { headerData } from "@/lib/data"
 import { Menu, X } from "lucide-react"
-
-
-const updatedHeaderData = {
-  ...headerData,
-  logo: "NotesAI"
-}
+import { getSession, signOut } from "next-auth/react"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession()
+      if (session?.user) {
+        setIsLoggedIn(true)
+      }
+    }
+    fetchSession()
+  }, [])
+
+  const handleSignOut = async () => {
+    await signOut()
+    setIsLoggedIn(false)
+  }
+
+  const authButtons = isLoggedIn ? (
+    <button
+      onClick={handleSignOut}
+      className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+    >
+      Sign out
+    </button>
+  ) : (
+    <div className="flex items-center space-x-4">
+      <Link
+        href="/signup"
+        className="px-6 py-2 text-gray-700 hover:text-gray-900 border border-gray-300 rounded-md hover:border-gray-400 transition-colors"
+      >
+        Sign up
+      </Link>
+      <Link
+        href="/signin"
+        className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+      >
+        Sign in
+      </Link>
+    </div>
+  )
+
+  const mobileAuthButtons = isLoggedIn ? (
+    <button
+      onClick={handleSignOut}
+      className="block w-full px-6 py-2 text-center bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+    >
+      Sign out
+    </button>
+  ) : (
+    <div className="w-full max-w-xs space-y-2 pt-4">
+      <Link
+        href="/signup"
+        className="block w-full px-6 py-2 text-center text-gray-700 border border-gray-300 rounded-md hover:border-gray-400 hover:text-gray-900 transition-colors"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        Sign up
+      </Link>
+      <Link
+        href="/signin"
+        className="block w-full px-6 py-2 text-center bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        Sign in
+      </Link>
+    </div>
+  )
 
   return (
     <header className="bg-white shadow-sm">
-      <nav className="container mx-auto px-8 py-6"> 
+      <nav className="container mx-auto px-8 py-6">
         <div className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold text-gray-800">
-            {updatedHeaderData.logo}
+            {headerData.logo}
           </Link>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {headerData.menuItems.map((item) => (
@@ -35,20 +96,7 @@ export default function Header() {
             ))}
             
             {/* Desktop Auth Buttons */}
-            <div className="flex items-center space-x-4">
-              <Link
-                href={headerData.authItems[0].href}
-                className="px-6 py-2 text-gray-700 hover:text-gray-900 border border-gray-300 rounded-md hover:border-gray-400 transition-colors"
-              >
-                {headerData.authItems[0].name}
-              </Link>
-              <Link
-                href={headerData.authItems[1].href}
-                className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-              >
-                {headerData.authItems[1].name}
-              </Link>
-            </div>
+            {authButtons}
           </div>
 
           {/* Mobile Menu Button */}
@@ -76,22 +124,7 @@ export default function Header() {
               ))}
               
               {/* Mobile Auth Buttons */}
-              <div className="w-full max-w-xs space-y-2 pt-4">
-                <Link
-                  href={headerData.authItems[0].href}
-                  className="block w-full px-6 py-2 text-center text-gray-700 border border-gray-300 rounded-md hover:border-gray-400 hover:text-gray-900 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {headerData.authItems[0].name}
-                </Link>
-                <Link
-                  href={headerData.authItems[1].href}
-                  className="block w-full px-6 py-2 text-center bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {headerData.authItems[1].name}
-                </Link>
-              </div>
+              {mobileAuthButtons}
             </div>
           </div>
         )}

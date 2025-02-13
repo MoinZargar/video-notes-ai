@@ -37,7 +37,7 @@ export default function SignInForm() {
                 "credentials",
                 { redirect: false, ...values }
             );
-            
+
             if (response?.error) {
                 setGlobalError('Incorrect email or password.');
                 return;
