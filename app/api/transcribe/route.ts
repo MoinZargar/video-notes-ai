@@ -8,13 +8,15 @@ export async function POST(req: Request): Promise<NextResponse> {
   try {
     const body: TranscribeRequestBody = await req.json();
     const { videoUrl } = body;
-    const session= await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
+
     if (!session) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
+
     if (!videoUrl) {
       return NextResponse.json(
         { error: 'Video URL is required' },
@@ -23,18 +25,13 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
 
     const transcript = await transcribeVideo(videoUrl);
-    console.log("transcript in route", transcript)
-    
-    const response= {
-      success: true,
-      transcript,
-    };
+    return NextResponse.json({ success: true, transcript }, { status: 200 });
 
-
-    return NextResponse.json(response, { status: 200 });
-
-  } catch (error:any) {
-    console.log("error", error)
-    throw new Error(error)
+  } catch (error: any) {
+    console.error("API Error:", error.message);
+    return NextResponse.json(
+      { error: error.message || 'Failed to transcribe video' },
+      { status: 500 }
+    );
   }
 }

@@ -67,10 +67,9 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
         }
       }
     } catch (error: any) {
-      setGlobalError(error )
+      setGlobalError(error?.response?.data?.error || "Something went wrong. Please try again.")
     }
   }
-  console.log("globalError", globalError)
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
