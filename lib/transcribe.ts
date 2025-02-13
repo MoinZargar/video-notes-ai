@@ -1,12 +1,27 @@
-import {YoutubeTranscript } from 'youtube-transcript';
-import { TranscribeAPIResponse } from "@/types/transcribe"
+import { Innertube } from 'youtubei.js/web';
+import { getYouTubeVideoId } from "@/lib/videoId"
 
-export const transcribeVideo = async (videoUrl: string): Promise<string> => {
-    try {
-        const transcript = await YoutubeTranscript.fetchTranscript(videoUrl);
-        return transcript.map(entry => entry.text).join(' ');
-    } catch (error: any) {
-        console.error("Error in transcribeVideo:", error.message);
-        throw new Error('Failed to fetch transcript: ' + error.message);
-    }
+export const transcribeVideo = async (videoUrl: string): Promise<string[] | undefined> => {
+  const youtube = await Innertube.create({
+    lang: 'en',
+    location: 'US',
+    retrieve_player: false,
+  });
+
+  const video_id = getYouTubeVideoId(videoUrl);
+
+  try {
+    const info = await youtube.getInfo(video_id);
+    const title = info.primary_info?.title.text;
+    const transcriptData = await info.getTranscript();
+    const transcript =
+      transcriptData?.transcript?.content?.body?.initial_segments.map(
+        (segment) => segment.snippet.text
+      );
+    const filteredTranscript = transcript?.filter((text): text is string => text !== undefined);
+    return filteredTranscript;
+  } catch (error) {
+    console.error('Error fetching transcript:', error);
+    throw error;
+  }
 };

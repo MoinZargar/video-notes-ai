@@ -1,7 +1,7 @@
 import { prompt } from "@/lib/constants";
 import { notesModel } from "@/lib/config/notesAI";
 
-export const generateNotes = async (transcript: string) => {
+export const generateNotes = async (transcript: string[] | undefined) => {
     try {
         const inputPrompt = prompt + transcript
         const result = await notesModel.generateContent(inputPrompt);

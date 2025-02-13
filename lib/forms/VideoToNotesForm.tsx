@@ -51,9 +51,10 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
       })
 
       // Create notes from transcript
-      if (transcriptResponse?.data?.transcript) {
+      const response = transcriptResponse.data
+      if (response.success) {
         const notesResponse = await axios.post("/api/notes", {
-          transcript: transcriptResponse.data.transcript,
+          transcript: response.transcript,
           videoUrl: values.videoUrl,
           course: values.course,
         })

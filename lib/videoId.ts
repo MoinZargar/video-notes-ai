@@ -1,5 +1,7 @@
-export const getYouTubeVideoId = (url: string): string => {
-    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/
-    const match = url.match(regex)
-    return match ? match[1] : ""
-}
+export const getYouTubeVideoId = (input: string): string => {
+    const regExp: RegExp =
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:.*[?&]v=|(?:v|e(?:mbed)?)\/|shorts\/|live\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match: RegExpMatchArray | null = input.match(regExp);
+  
+    return match && match[1] ? match[1] : input;
+};

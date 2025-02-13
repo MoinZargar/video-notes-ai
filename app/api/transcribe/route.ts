@@ -24,7 +24,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       );
     }
 
-    const transcript = await transcribeVideo(videoUrl);
+    const transcript: string[] | undefined = await transcribeVideo(videoUrl);
     return NextResponse.json({ success: true, transcript }, { status: 200 });
 
   } catch (error: any) {
