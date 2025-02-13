@@ -23,7 +23,7 @@ interface VideoToNotesFormProps {
 }
 
 export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNotesFormProps) {
-  const [globalError, setGlobalError] = useState<string>("")
+  const [globalError, setGlobalError] = useState<any>(null)
 
   const form = useForm<VideoNotesFormData>({
     resolver: zodResolver(videoNotesSchema),
@@ -67,10 +67,10 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
         }
       }
     } catch (error: any) {
-      setGlobalError(error?.message || "Something went wrong. Please try again.")
+      setGlobalError(error )
     }
   }
-
+  console.log("globalError", globalError)
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
