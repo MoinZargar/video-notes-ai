@@ -1,3 +1,4 @@
+// @ts-ignore
 import {YoutubeTranscript } from 'youtube-transcript';
 import { TranscribeAPIResponse } from "@/types/transcribe"
 
