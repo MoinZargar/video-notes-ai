@@ -1,3 +1,4 @@
+
 "use server"
 import Sidebar from "@/components/Sidebar"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -15,12 +16,14 @@ export default async function DashboardLayout({
             <SidebarProvider>
                 <main className="flex min-h-screen w-full">
                     <Sidebar initialCourses={courses} />
-                    <div className="flex-1">
-                        <SidebarTrigger />
-
+                    <div className="flex-1 flex flex-col">
+                        <div className="flex items-center bg-[#F8F7FC] px-6">
+                            <SidebarTrigger />
+                        </div>
+                        <div className="pl-8">  
+                            {children}
+                        </div>
                     </div>
-                    {children}
-
                 </main>
             </SidebarProvider>
         )

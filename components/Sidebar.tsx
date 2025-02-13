@@ -64,7 +64,7 @@ export default function AppSidebar({ initialCourses }: SidebarProps) {
     <>
       <Sidebar className="w-[240px] lg:w-[280px] border-r-0 bg-[#0A0A0A] pb-2"> 
         <SidebarHeader className="border-b border-zinc-800/50 p-4 bg-[#0A0A0A]">
-          <h2 className="text-2xl font-medium text-white mt-2">VidNotes</h2>
+          <h2 className="text-2xl font-medium text-white mt-2">NotesAI</h2>
           <div className="space-y-3 mt-8">
             <Link 
               href="/dashboard"
