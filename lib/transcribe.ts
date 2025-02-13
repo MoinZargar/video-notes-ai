@@ -1,5 +1,4 @@
 import {YoutubeTranscript } from 'youtube-transcript';
-import { getYouTubeVideoId } from "@/lib/videoId"
 import { TranscribeAPIResponse } from "@/types/transcribe"
 
 export const transcribeVideo = async (videoUrl: string): Promise<string> => {
@@ -14,6 +13,7 @@ export const transcribeVideo = async (videoUrl: string): Promise<string> => {
         return transcription;
 
     } catch (error:any) {
+        console.log("error in transcribeVideo", error)
         throw new Error(error?.message || "Failed to transcribe video")
     }
 }

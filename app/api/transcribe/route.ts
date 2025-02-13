@@ -23,6 +23,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
 
     const transcript = await transcribeVideo(videoUrl);
+    console.log("transcript in route", transcript)
     if (!transcript) {
       return NextResponse.json({ error: 'Failed to transcribe video' }, { status: 500 });
     }
@@ -35,6 +36,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     return NextResponse.json(response, { status: 200 });
 
   } catch (error:any) {
+    console.log("error", error)
     throw new Error(error?.response?.data?.message || "Failed to transcribe video")
   }
 }
