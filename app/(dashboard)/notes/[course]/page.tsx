@@ -1,12 +1,10 @@
 import NotesViewer from "@/components/NotesViewer"
 import fetchNotesAction from "@/app/actions/fetchNotesAction"
 
-interface NotesPageProps {
-  course: string
-}
 
-const NotesPage: React.FC<NotesPageProps> = async ({ course }) => {
+export default async function NotesPage({ params }: {params: Promise<{course: string}>}) {
   try {
+    const { course } =await params
     const notes = await fetchNotesAction(course)
 
     return (
@@ -34,5 +32,3 @@ const NotesPage: React.FC<NotesPageProps> = async ({ course }) => {
     )
   }
 }
-
-export default NotesPage
