@@ -3,7 +3,7 @@ import fetchNotesAction from "@/app/actions/fetchNotesAction"
 
 export default async function NotesPage({ params }: { params: { course: string } }) {
   try {
-    const { course } = await params
+    const { course } = params
     const notes = await fetchNotesAction(course)
 
     return (
