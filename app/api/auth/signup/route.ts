@@ -3,12 +3,12 @@ import db from '@/lib/prisma';
 import { signUpSchema } from '@/lib/schemas/authSchema';
 import bcrypt from 'bcrypt';
 import { Provider } from '@prisma/client';
+import { SignUpFormData } from '@/types/forms';
 
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    
+    const body:SignUpFormData = await req.json();
     const validatedData = signUpSchema.safeParse(body);
     if (!validatedData.success) {
       return NextResponse.json(
@@ -16,8 +16,7 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-   const {name, email, password} = validatedData.data;
-    
+    const {name, email, password} = validatedData.data; 
     const existingUser = await db.user.findUnique({
         where: { email: email }
     });

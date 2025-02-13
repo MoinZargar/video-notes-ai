@@ -1,17 +1,22 @@
-"use client"
-import Image from "next/image";
-import { useSession } from "next-auth/react";
-import Navbar from "@/components/Navbar";
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+import Features from "@/components/Features";
+import HowItWorks from "@/components/HowItWorks";
+import FAQ from "@/components/Faq";
+import Footer from "@/components/Footer";
 
 export default function Home() {
-  const session = useSession()
-  console.log(session)
   return (
-    
-      <main >
-        <Navbar />
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <main>
+        <Hero />
+        <Features />
+        <HowItWorks />
+        <FAQ />
       </main>
-      
-   
-  );
+      <Footer />
+    </div>
+  )
 }
+

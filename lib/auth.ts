@@ -9,6 +9,7 @@ import { signInSchema } from "./schemas/authSchema"
 import db from "../lib/prisma"
 import { Provider } from "@prisma/client"
 import { AuthUser } from "@/types/next-auth"
+import { SignInFormData } from "@/types/forms"
 
 
 export const authOptions: NextAuthOptions = {
@@ -20,7 +21,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password", placeholder: "Password" },
       },
       async authorize(
-        credentials: z.infer<typeof signInSchema> | undefined
+        credentials: SignInFormData | undefined
       ): Promise<AuthUser | null> {
         try {
           //if user sign up through email and password

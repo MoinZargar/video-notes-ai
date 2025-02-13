@@ -17,11 +17,12 @@ import ErrorMessage from "@/components/ErrorMessage";
 import axios from "axios";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 export default function SignupForm() {
-
     const [globalError, setGlobalError] = useState<string>("");
+    const router = useRouter();
     const form = useForm<z.infer<typeof signUpSchema>>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
@@ -45,6 +46,7 @@ export default function SignupForm() {
                     { redirect: false, ...data }
                 );
             }
+            router.push("/dashboard");
         } catch (error: any) {
             setGlobalError(error?.response?.data?.error || 'Internal server error');
         }

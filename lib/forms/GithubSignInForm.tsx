@@ -6,10 +6,11 @@ import ErrorMessage from "@/components/ErrorMessage";
 
 export default function GithubSignInForm() {
     const [globalError, setGlobalError] = useState<string>("");
+    
     const handleGithubSignin = async () => {
         try {
             setGlobalError("");
-            await signIn('google');
+            await signIn('github',{ callbackUrl: '/dashboard' });   
         } catch (error) {
             setGlobalError('Failed to sign in with Google');
         }

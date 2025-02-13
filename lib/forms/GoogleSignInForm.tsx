@@ -4,12 +4,13 @@ import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/react";
 import ErrorMessage from "@/components/ErrorMessage";
 
+
 export default function GoogleSignInForm() {
     const [globalError, setGlobalError] = useState<string>("");
     const handleGoogleSignin = async () => {
         try {
             setGlobalError("");
-            await signIn('google');
+            await signIn('google',{ callbackUrl: '/dashboard' });  
         } catch (error) {
             setGlobalError('Failed to sign in with Google');
         }

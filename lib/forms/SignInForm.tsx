@@ -16,9 +16,12 @@ import LoadingButton from "@/components/LoadingButton";
 import ErrorMessage from "@/components/ErrorMessage";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 
 export default function SignInForm() {
     const [globalError, setGlobalError] = useState<string>("");
+    const router = useRouter();
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
         defaultValues: {
@@ -34,10 +37,12 @@ export default function SignInForm() {
                 "credentials",
                 { redirect: false, ...values }
             );
+            
             if (response?.error) {
                 setGlobalError('Incorrect email or password.');
                 return;
             }
+            router.push("/dashboard");
         } catch (error) {
             setGlobalError('Internal server error');
         }
