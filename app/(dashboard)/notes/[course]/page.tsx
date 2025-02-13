@@ -1,7 +1,11 @@
 import NotesViewer from "@/components/NotesViewer"
 import fetchNotesAction from "@/app/actions/fetchNotesAction"
 
-export default async function NotesPage({ params }: { params: { course: string } }) {
+interface NotesPageProps {
+  course: string
+}
+
+export default async function NotesPage( params : NotesPageProps) {
   try {
     const { course } = params
     const notes = await fetchNotesAction(course)
