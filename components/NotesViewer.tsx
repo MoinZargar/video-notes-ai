@@ -70,7 +70,7 @@ export default function NotesViewer({ notes, course }: NotesViewerProps) {
                   onClick={() => setOpenChat(true)}
                 >
                   <MessageSquare className="h-4 w-4 mr-2" />
-                  Ask AI Assistant
+                  Ask AI Tutor
                 </Button>
               </div>
             </div>

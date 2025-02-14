@@ -3,7 +3,6 @@ import { chatPrompt } from "./constants";
 import { ChatMessage } from "@/types/chat";
 
 export const chatBot = async (message: string, history: ChatMessage[]): Promise<string> => {
-    console.log(history)
     try {
         const chatSession = chatModel.startChat({
             generationConfig,

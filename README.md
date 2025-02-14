@@ -32,13 +32,13 @@ GITHUB_CLIENT_ID=your-github-client-id
 GITHUB_CLIENT_SECRET=your-google-client-secret
 ```
 
-> **Note**: The project uses two different Gemini API keys - one for notes generation and another for the chatbot. You can use a single key, but this will require code modifications.
+> **Note**: The project uses two different Gemini API keys - one for notes generation and another for the chatbot.If you wish you can use a single key for both.
 
 ### 🏃‍♂️ Running the Application
 
 1. Start the application:
 ```bash
-docker compose up --build
+docker-compose up --build
 ```
 
 2. Open your browser and navigate to:
@@ -48,8 +48,14 @@ http://localhost:3000
 
 3. To stop the application:
 ```bash
-docker compose down
+docker-compose down
 ```
+
+4. To visualize the database, run the following command in your terminal:
+```bash
+docker-compose exec app npx prisma studio
+```
+Then, navigate to `http://localhost:5555` in your web browser to view the database.
 
 
 ## 🛠️ Tech Stack
@@ -60,6 +66,7 @@ docker compose down
 - **UI Components**: shadcn/ui
 - **Styling**: Tailwind CSS
 - **Language**: TypeScript
+- **State Management**: Redux Toolkit
 - **Containerization**: Docker
 
 ## 🤝 Contributing

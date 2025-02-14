@@ -70,7 +70,7 @@ export default function AIChatForm({ onMessage, history, setIsLoading, setError 
                         render={({ field }) => (
                             <FormControl className="flex-grow lg:mr-2 mr-1">
                                 <Input
-                                    placeholder="Message AI Assistant..."
+                                    placeholder="Message AI Tutor..."
                                     {...field}
                                     className={form.formState.errors.message ? "border-red-500" : ""}
                                 />

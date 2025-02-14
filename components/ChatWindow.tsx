@@ -78,7 +78,7 @@ export default function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
             className="flex flex-row items-center justify-between space-y-0 bg-black text-white p-4 cursor-move"
           >
             <div className="flex-1 min-w-0">
-              <h4 className="font-medium truncate">AI Doubt Solver</h4>
+              <h4 className="font-medium truncate">AI Tutor</h4>
             </div>
             <div className="flex items-center gap-1 shrink-0">
               <Button
@@ -113,8 +113,8 @@ export default function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
               <CardContent className="flex-1 p-4 overflow-y-auto">
                 {messages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full space-y-4 text-center">
-                    <h2 className="text-xl sm:text-2xl font-semibold">Hello, I'm AI Assistant</h2>
-                    <p className="text-lg sm:text-xl">Have doubts in your notes?</p>
+                    <h2 className="text-xl sm:text-2xl font-semibold">👋 Hello, I'm AI Nazneen</h2>
+                    <p className="text-lg sm:text-xl">Your AI Tutor</p>
                     <div className="space-y-4 max-w-sm">
                       <p className="text-muted-foreground">
                         Ask me any doubts related to your notes, and I will help you resolve them.
