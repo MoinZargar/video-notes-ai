@@ -113,7 +113,7 @@ export default function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
               <CardContent className="flex-1 p-4 overflow-y-auto">
                 {messages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full space-y-4 text-center">
-                    <h2 className="text-xl sm:text-2xl font-semibold">👋 Hello, I'm AI Nazneen</h2>
+                    <h2 className="text-xl sm:text-2xl font-semibold">👋 Hello, I'm  Nazneen</h2>
                     <p className="text-lg sm:text-xl">Your AI Tutor</p>
                     <div className="space-y-4 max-w-sm">
                       <p className="text-muted-foreground">
