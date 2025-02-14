@@ -1,0 +1,10 @@
+node_modules/
+.next/
+
+# Exclude environment files with sensitive data
+.env*
+npm-debug.log
+
+# Exclude Git history and configuration
+.git
+.gitignore
