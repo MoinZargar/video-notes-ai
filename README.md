@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YouTube Lectures to AI Notes Converter
 
-## Getting Started
+Convert YouTube educational content into well-structured, downloadable notes using AI. It also includes an AI assistant to help understand the content and resolve doubts.
 
-First, run the development server:
+## Installation
 
+### Prerequisites
+
+- Docker
+- Git
+
+### Setup Steps
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/MoinZargar/video-notes-ai.git
+cd video-notes-ai
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Create `.env.development` file in the root directory with the following variables:
+```env
+DATABASE_URL="postgresql://user:password@db:5432/mydatabase?schema=public"
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=any-random-string
+GEMINI_NOTES_API_KEY=get-it-from-google-ai-studio
+GEMINI_CHAT_API_KEY=get-it-from-google-ai-studio
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# OAuth Configuration (Optional)
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-google-client-secret
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+> **Note**: The project uses two different Gemini API keys - one for notes generation and another for the chatbot. You can use a single key, but this will require code modifications.
 
-## Learn More
+### 🏃‍♂️ Running the Application
 
-To learn more about Next.js, take a look at the following resources:
+1. Start the application:
+```bash
+docker compose up --build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Open your browser and navigate to:
+```
+http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. To stop the application:
+```bash
+docker compose down
+```
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Frontend & Backend**: Next.js
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **UI Components**: shadcn/ui
+- **Styling**: Tailwind CSS
+- **Language**: TypeScript
+- **Containerization**: Docker
+
+## 🤝 Contributing
+
+Feel free to contribute to this project by creating issues or submitting pull requests.
+
