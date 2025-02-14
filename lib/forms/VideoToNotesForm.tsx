@@ -81,7 +81,7 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
         {form.formState.isSubmitting && (
           <div className="flex items-center justify-center gap-2 mb-6">
             <LoaderPinwheelIcon className="h-6 w-6 animate-spin text-blue-500" />
-            <p className="text-base font-medium text-blue-600">Please wait, processing your video. This may take a few minutes...</p>
+            <p className="text-base font-medium text-blue-600">Please wait, processing your video. This may take up to 1 minute...</p>
           </div>
         )}
 
