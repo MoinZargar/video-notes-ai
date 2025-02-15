@@ -1,9 +1,9 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import GoogleSignInForm from "@/lib/forms/GoogleSignInForm";
-import GithubSignInForm from "@/lib/forms/GithubSignInForm";
-import SignUpForm from "@/lib/forms/SignUpForm";
+import GoogleSignInForm from "@/components/forms/GoogleSignInForm";
+import GithubSignInForm from "@/components/forms/GithubSignInForm";
+import SignUpForm from "@/components/forms/SignUpForm";
 
 
 export default function SignUp() {

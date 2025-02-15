@@ -4,7 +4,7 @@ import { SidebarMenuButton } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
-import CreateCourseForm from "@/lib/forms/CreateCourseForm"
+import CreateCourseForm from "@/components/forms/CreateCourseForm"
 import { useState } from "react"
 import { Course } from "@prisma/client"
 

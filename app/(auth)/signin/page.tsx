@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import GoogleSignInForm from "@/lib/forms/GoogleSignInForm";
-import GithubSignInForm from "@/lib/forms/GithubSignInForm";
-import SignInForm from "@/lib/forms/SignInForm";
+import GoogleSignInForm from "@/components/forms/GoogleSignInForm";
+import GithubSignInForm from "@/components/forms/GithubSignInForm";
+import SignInForm from "@/components/forms/SignInForm";
 
 export default function SignIn() {
     

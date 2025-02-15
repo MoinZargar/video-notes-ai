@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CourseWithNotesCount, SerializedCourse } from "@/types/course"
 import { useEffect, useState } from "react"
-import VideoToNotesForm from "@/lib/forms/VideoToNotesForm"
+import VideoToNotesForm from "@/components/forms/VideoToNotesForm"
 
 interface DashboardContentProps {
     courses: CourseWithNotesCount[] | undefined

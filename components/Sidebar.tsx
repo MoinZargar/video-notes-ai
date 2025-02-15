@@ -16,7 +16,7 @@ import {
 import { Course } from "@prisma/client"
 import CreateCourse from "@/components/CreateCourse"
 import { useEffect, useState } from "react"
-import VideoToNotesForm from "@/lib/forms/VideoToNotesForm" 
+import VideoToNotesForm from "@/components/forms/VideoToNotesForm" 
 import { AppDispatch, RootState } from "@/store/store"
 import { useDispatch, useSelector } from "react-redux"
 import { setCourses } from "@/store/coursesSlice"
