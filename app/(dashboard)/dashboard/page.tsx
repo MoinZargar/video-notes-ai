@@ -13,7 +13,7 @@ export default async function DashboardPage() {
       <div className="container mx-auto sm:px-6 lg:px-8 py-8 space-y-8">
         <div>
           <h1 className="text-2xl lg:text-3xl font-bold">
-            Welcome back, {userName} <span className="inline-block animate-wave">👋</span>
+            Welcome back, {userName ? `${userName.charAt(0).toUpperCase()}${userName.slice(1)}` : 'User'} <span className="inline-block animate-wave">👋</span>
           </h1>
           <p className="text-muted-foreground mt-2">
             Create AI-powered study notes from YouTube lectures

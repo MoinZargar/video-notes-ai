@@ -14,7 +14,7 @@ export default function CreateCourse() {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
 
     return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog  open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
           <SidebarMenuButton
             asChild
@@ -28,7 +28,7 @@ export default function CreateCourse() {
           </SidebarMenuButton>
         </DialogTrigger>
 
-        <DialogContent className="bg-white">
+        <DialogContent className="max-w-[90%] lg:max-w-[600px] md:max-w-[350px]">
           <DialogHeader>
               <DialogTitle>Add New Course</DialogTitle>
           </DialogHeader>

@@ -18,7 +18,7 @@ export default async function DashboardLayout({
                     <Sidebar initialCourses={courses} />
                     <div className="flex-1 flex flex-col">
                         <div className="flex items-center bg-[#F8F7FC] px-6">
-                            <SidebarTrigger />
+                            <SidebarTrigger className="mt-4" />
                         </div>
                         <div className="pl-8">  
                             {children}

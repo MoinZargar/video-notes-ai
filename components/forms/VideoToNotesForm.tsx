@@ -73,7 +73,7 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
   }
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-[90%] lg:max-w-[600px] md:max-w-[350px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Generate Notes from Video Lecture</DialogTitle>
         </DialogHeader>
