@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         })
         // remove the pdf file from the server
         fs.unlinkSync(uploadedPdf.filepath)
-        return NextResponse.json({ notes }, { status: 200 })
+        return NextResponse.json({message: "Notes generated successfully"}, { status: 200 })
 
     } catch (error:any) {
         console.log(error.message )
