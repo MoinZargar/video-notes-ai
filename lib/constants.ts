@@ -1,7 +1,7 @@
 import { ChatWindowSizeType } from '@/types/chat'
 import { PdfStyle } from '@/types/pdf';
 
-export const prompt = `Generate comprehensive and detailed notes from the following transcript. Provide in-depth explanations for each concept while maintaining the transcript's level of detail and including all provided examples.
+export const videoNotesPrompt = `Generate comprehensive and detailed notes from the following transcript. Provide in-depth explanations for each concept while maintaining the transcript's level of detail and including all provided examples.
 
 Strictly follow this exact structure for the response:
 1. Use "##" for main topics.

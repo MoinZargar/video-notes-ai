@@ -1,10 +1,10 @@
-import { prompt } from "@/lib/constants";
-import { notesModel } from "@/lib/config/notesAI";
 
-export const generateNotes = async (transcript: string[] | undefined) => {
+import { videoNotesModel } from "@/lib/config/videoNotes";
+
+export const generateVideoNotes = async (transcript: string[] | undefined) => {
     try {
-        const inputPrompt = prompt + transcript
-        const result = await notesModel.generateContent(inputPrompt);
+        const input= transcript?transcript:""
+        const result = await videoNotesModel.generateContent(input);
         const notes = result.response.text();
         if (!notes) {
             throw new Error("Something went wrong while generating notes")
@@ -14,3 +14,4 @@ export const generateNotes = async (transcript: string[] | undefined) => {
         throw new Error(error.errorDetails[1]?.message)
     }
 }
+

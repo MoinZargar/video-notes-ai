@@ -1,5 +1,5 @@
 import  {GoogleGenerativeAI, HarmCategory, HarmBlockThreshold,} from "@google/generative-ai";
-  
+
   const apiKey = process.env.GEMINI_CHAT_API_KEY;
   const chatAI = new GoogleGenerativeAI(apiKey || "");
   

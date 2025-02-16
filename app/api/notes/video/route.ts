@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { generateNotes } from "@/lib/notes";
+import { generateVideoNotes } from "@/lib/notes";
 import db from "@/lib/prisma";
 import { NotesRequestBody } from "@/types/notes";
 import { getServerSession } from "next-auth";
@@ -17,7 +17,7 @@ export async function POST(req: Request){
         if (!transcript || !videoUrl) {
             return NextResponse.json({ error: 'Transcript and videoUrl is required' }, { status: 400 });
         }
-        const notes = await generateNotes(transcript);
+        const notes = await generateVideoNotes(transcript);
         const userId = Number(session.user.id);
         const Course = await db.course.findFirst({
             where: {

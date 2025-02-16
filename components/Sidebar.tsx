@@ -1,5 +1,5 @@
 "use client"
-import { LayoutDashboard, Play, BookOpen, ChevronUp } from "lucide-react"
+import { LayoutDashboard, Play, BookOpen, ChevronUp, Upload } from "lucide-react"
 import Link from "next/link"
 import {
   Sidebar,
@@ -20,6 +20,7 @@ import VideoToNotesForm from "@/components/forms/VideoToNotesForm"
 import { AppDispatch, RootState } from "@/store/store"
 import { useDispatch, useSelector } from "react-redux"
 import { setCourses } from "@/store/coursesSlice"
+import PdfToNotesForm from "@/components/forms/PdfToNotesForm"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,7 +37,9 @@ interface SidebarProps {
 export default function AppSidebar({ initialCourses }: SidebarProps) {
   const dispatch: AppDispatch = useDispatch();
   const courses = useSelector((state: RootState) => state.courses.courses);
-  const [isVideoNotesOpen, setIsVideoNotesOpen] = useState(false);
+  const [isVideoNotesOpen, setIsVideoNotesOpen] = useState<boolean>(false);
+  const [isPdfNotesOpen, setIsPdfNotesOpen] = useState<boolean>(false);
+
   const router = useRouter();
   
   useEffect(() => {
@@ -80,6 +83,13 @@ export default function AppSidebar({ initialCourses }: SidebarProps) {
             >
               <Play className="mr-3 h-4 w-4" />
               <span>Generate Notes from Video</span>
+            </div>
+            <div
+              className="flex items-center text-base text-zinc-200 hover:bg-zinc-800/50 hover:text-white rounded-md p-2 cursor-pointer transition-colors"
+              onClick={() => setIsPdfNotesOpen(true)}
+            >
+              <Upload className="mr-3 h-4 w-4" />
+              <span>Generate Notes from PDF</span>
             </div>
           </div>
         </SidebarHeader>
@@ -160,6 +170,11 @@ export default function AppSidebar({ initialCourses }: SidebarProps) {
       <VideoToNotesForm
         isOpen={isVideoNotesOpen} 
         onClose={() => setIsVideoNotesOpen(false)} 
+        courses={courses}
+      />
+      <PdfToNotesForm
+        isOpen={isPdfNotesOpen}
+        onClose={() => setIsPdfNotesOpen(false)}
         courses={courses}
       />
     </>
