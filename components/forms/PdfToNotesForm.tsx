@@ -8,13 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { createCourse } from "@/app/actions/createCourseAction"
-import { LoaderPinwheelIcon } from "lucide-react"
+import { LoaderPinwheelIcon, Upload } from "lucide-react"
 import LoadingButton from "@/components/LoadingButton"
 import { SerializedCourse } from "@/types/course"
 import { pdfNotesSchema } from "@/lib/schemas/pdfNotesSchema"
 import { PdfNotesFormData } from "@/types/forms"
-import fs from 'fs'
-import path from 'path'
 import axios from "axios"
 
 interface PdfNotesFormProps {
@@ -25,6 +23,8 @@ interface PdfNotesFormProps {
 
 export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFormProps) {
   const [globalError, setGlobalError] = useState<any>(null)
+  const [dragActive, setDragActive] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   const form = useForm<PdfNotesFormData>({
     resolver: zodResolver(pdfNotesSchema),
@@ -37,15 +37,12 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
   const onSubmit = async (values: PdfNotesFormData) => {
     try {
       setGlobalError("")
-      console.log("values ", values)
-      // Create course if it doesn't exist
       if (courses.length === 0) {
         await createCourse({
           name: values.course,
           description: "",
         })
       }
-      // Create FormData and append files
       const formData = new FormData()
       formData.append('pdfFile', values.pdfFile)
       formData.append('course', values.course)
@@ -55,10 +52,34 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
               'Content-Type': 'multipart/form-data',
           },
       })
-      // onClose()
-      // window.location.href = `/notes/${values.course}`
+      onClose()
+      window.location.href = `/notes/${values.course}`
     } catch (error: any) {
       setGlobalError(error?.response?.data?.error || "Something went wrong. Please try again.")
+    }
+  }
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true)
+    } else if (e.type === "dragleave") {
+      setDragActive(false)
+    }
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0]
+      if (file.type === "application/pdf") {
+        setSelectedFile(file)
+        form.setValue("pdfFile", file)
+      }
     }
   }
 
@@ -72,7 +93,7 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
         {form.formState.isSubmitting && (
           <div className="flex items-center justify-center gap-2 mb-6">
             <LoaderPinwheelIcon className="h-6 w-6 animate-spin text-blue-500" />
-            <p className="text-base font-medium text-blue-600">Please wait, saving your PDF...</p>
+            <p className="text-base font-medium text-blue-600">Please wait, processing your PDF. This may take up to 1 minute...</p>
           </div>
         )}
 
@@ -85,19 +106,48 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
               name="pdfFile"
               render={({ field: { value, onChange, ...field } }) => (
                 <FormItem className="mb-6">
-                  <FormLabel>Upload PDF</FormLabel>
+                  <FormLabel className="text-base font-medium">Upload PDF</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="file" 
-                      accept=".pdf"
-                      onChange={(e) => {
-                        if (e.target.files?.[0]) {
-                          onChange(e.target.files[0])
-                        }
-                      }}
-                      className="cursor-pointer"
-                      {...field}
-                    />
+                    <div
+                      className={`relative border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors
+                        ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
+                        ${selectedFile ? 'bg-gray-50' : ''}`}
+                      onDragEnter={handleDrag}
+                      onDragLeave={handleDrag}
+                      onDragOver={handleDrag}
+                      onDrop={handleDrop}
+                      onClick={() => document.getElementById('pdf-upload')?.click()}
+                    >
+                      <Input
+                        id="pdf-upload"
+                        type="file"
+                        accept=".pdf"
+                        className="hidden"
+                        onChange={(e) => {
+                          if (e.target.files?.[0]) {
+                            setSelectedFile(e.target.files[0])
+                            onChange(e.target.files[0])
+                          }
+                        }}
+                        {...field}
+                      />
+                      <div className="flex flex-col items-center justify-center space-y-3">
+                        <Upload className="h-10 w-10 text-gray-400" />
+                        {selectedFile ? (
+                          <>
+                            <p className="text-sm text-gray-600">Selected file: {selectedFile.name}</p>
+                            <p className="text-xs text-gray-500">Click or drag to replace</p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-sm font-medium text-gray-600">
+                              Click to upload or drag and drop
+                            </p>
+                            <p className="text-xs text-gray-500">PDF files only</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

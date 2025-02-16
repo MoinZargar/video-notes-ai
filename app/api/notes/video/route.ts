@@ -39,6 +39,7 @@ export async function POST(req: Request){
             data: {
                 videoUrl: videoUrl,
                 content: notes,
+                source: "video",
                 userId: userId,
                 courseId: courseId
             }

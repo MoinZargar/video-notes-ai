@@ -76,15 +76,17 @@ export default function NotesViewer({ notes, course }: NotesViewerProps) {
             </div>
           </CardHeader>
           <CardContent className="px-4 py-2">
-            <div className="relative pt-[90%] lg:pt-[45%] w-full lg:px-8 rounded-lg overflow-hidden">
-              <iframe
-                src={`https://www.youtube.com/embed/${getYouTubeVideoId(note.videoUrl)}`}
-                title={`Lecture ${index + 1}`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full lg:w-[80%] lg:h-[80%] border-0"
-              />
-            </div>
+            {note.videoUrl && (
+              <div className="relative pt-[90%] lg:pt-[45%] w-full lg:px-8 rounded-lg overflow-hidden">
+                <iframe
+                  src={`https://www.youtube.com/embed/${getYouTubeVideoId(note.videoUrl)}`}
+                  title={`Lecture ${index + 1}`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full lg:w-[80%] lg:h-[80%] border-0"
+                />
+              </div>
+            )}
             <div className="lg:mt-4 pt-0 border-t border-zinc-100 dark:border-zinc-800">
               <div className="prose prose-zinc dark:prose-invert max-w-none">
                 <ReactMarkdown

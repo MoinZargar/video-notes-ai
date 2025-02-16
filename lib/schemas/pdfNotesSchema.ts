@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const fileSizeLimit = 15 * 1024 * 1024;
+const fileSizeLimit = 30 * 1024 * 1024;
 export const pdfNotesSchema = z.object({
     pdfFile: z
         .instanceof(File)

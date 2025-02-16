@@ -22,7 +22,7 @@ cd video-notes-ai
 DATABASE_URL="postgresql://user:password@db:5432/mydatabase?schema=public"
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=any-random-string
-GEMINI_NOTES_API_KEY=get-it-from-google-ai-studio
+GEMINI_VIDEO_NOTES_API_KEY=get-it-from-google-ai-studio
 GEMINI_CHAT_API_KEY=get-it-from-google-ai-studio
 
 # OAuth Configuration (Optional)
@@ -30,9 +30,10 @@ GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GITHUB_CLIENT_ID=your-github-client-id
 GITHUB_CLIENT_SECRET=your-google-client-secret
+GEMINI_PDF_NOTES_API_KEY=get-it-from-google-ai-studio
 ```
 
-> **Note**: The project uses two different Gemini API keys - one for notes generation and another for the chatbot.If you wish you can use a single key for both.
+> **Note**: The project uses three different Gemini API keys - one for video notes generation, one for the chatbot, and one for generating notes from PDFs. If you wish, you can use a single key for all three purposes.
 
 ### 🏃‍♂️ Running the Application
 

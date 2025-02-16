@@ -28,7 +28,7 @@ model User {
 
 model Course {
   id            Int    @id @default(autoincrement())
-  name          String
+  name          String @unique
   description   String?
   userId        Int
   notes         Notes[]
@@ -41,8 +41,9 @@ model Course {
 
 model Notes {
   id            Int    @id @default(autoincrement())
-  videoUrl      String
-  content       String  
+  videoUrl      String?
+  content       String
+  source        SourceType 
   courseId      Int
   userId        Int
   createdAt     DateTime  @default(now())
@@ -52,6 +53,11 @@ model Notes {
 
   @@index([courseId]) 
   @@index([userId])  
+}
+
+enum SourceType {
+  video
+  pdf
 }
 enum Provider {
     CREDENTIALS
