@@ -52,17 +52,21 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
         course: values.course, // Pass the course name to the server
       });
 
-      // Upload PDF to Vercel Blob with course name as clientPayload
+      // Step 1: Upload PDF to Vercel Blob
       const newBlob = await upload(file.name, file, {
         access: 'public',
-        handleUploadUrl: '/api/notes/pdf',
-        clientPayload
+        handleUploadUrl: '/api/upload/pdf',
       });
-
+      //Step 2: Generate Notes from PDF
+      const notesResponse = await axios.post('/api/notes/pdf', {
+        blobUrl: newBlob.url,
+        course: values.course,
+      })
       onClose();
       window.location.href = `/notes/${values.course}`;
     } catch (error: any) {
-      setGlobalError(error?.message || "Something went wrong. Please try again.");
+      console.log("error  ",error?.response?.data?.error)
+      setGlobalError("Something went wrong. Please try again.");
     }
   };
 

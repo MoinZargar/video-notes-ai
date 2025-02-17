@@ -3,7 +3,7 @@ import { videoNotesModel } from "@/lib/config/videoNotesAI";
 import { fileManager, pdfNotesModel } from "./config/pdfNotesAI";
 
 
-export const generateVideoNotes = async (transcript: string[] | undefined) => {
+export const generateVideoNotes = async (transcript: string[] | undefined):Promise<string>  => {
     try {
         const input = transcript ? transcript : ""
         const result = await videoNotesModel.generateContent(input);
@@ -17,31 +17,26 @@ export const generateVideoNotes = async (transcript: string[] | undefined) => {
     }
 }
 
-export const generateNotesFromPDF = async (filename: string, path: string) => {
+export const generateNotesFromPDF= async (fileUrl: string):Promise<string>  => {
     try {
-        const uploadResult = await fileManager.uploadFile(
-            path,
-            {
-                mimeType: "application/pdf",
-                displayName: filename,
-            },
-        );
 
-        const result = await pdfNotesModel.generateContent([
-            {
-                fileData: {
-                    fileUri: uploadResult.file.uri,
-                    mimeType: uploadResult.file.mimeType,
+        const pdfResp = await fetch(fileUrl)
+            .then((response) => response.arrayBuffer());
+
+            const result = await pdfNotesModel.generateContent([
+                {
+                    inlineData: {
+                        data: Buffer.from(pdfResp).toString("base64"),
+                        mimeType: "application/pdf",
+                    },
                 },
-            },
-            'Please follow the instructions provided in the system instruction and generate the notes'
-        ]);
-        await fileManager.deleteFile(uploadResult.file.name);
-        const notes = result.response.text();
-        return notes;
+                'Please generate notes from the given pdf file according to the system instruction',
+            ]);
+            const notes = result.response.text();
+            return notes;
 
     } catch (error: any) {
-        console.log("error", error)
-        throw new Error(error.errorDetails[1]?.message || "Something went wrong while generating notes")
+        console.log("error", error.stack)
+        throw new Error(error.message || "Something went wrong while generating notes")
     }
 }

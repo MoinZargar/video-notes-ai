@@ -62,17 +62,17 @@ Strictly follow this exact structure for the response:
 Instructions:
 1. Present information primarily in detailed paragraphs that flow naturally.
 2. Don't skip any concepts from the PDF.
-2. Format mathematical formulas in markdown format if present.
-3. Format code examples in markdown format in a large font size if present.
-4. Write numericals in the proper mathematical format if present.
-5. If there is a table in the PDF, format it in markdown format.
-6. If there is a list in the PDF, format it in markdown format.
-7. If there is a image in the PDF, format it in markdown format.
-8. If there is a equation in the PDF, format it in markdown format.
-9. Clearly delineate topics and subtopics with proper headings.
-10. Explain concepts with examples and use cases when provided in the PDF.
-11. Break down complex topics into digestible sections while maintaining technical accuracy.
-12. Do not include any introductory text or meta-commentary.`
+3. Format mathematical formulas if any are present in the pdf in markdown format don't use $ sign before or after the formula.
+4. Format code examples in markdown format in a large font size if present.
+5. Write numericals in the proper mathematical format if present.
+6. If there is a table in the PDF, format it in markdown format.
+7. If there is a list in the PDF, format it in markdown format.
+8. If there is a image in the PDF, format it in markdown format.
+9. If there is a equation in the PDF, format it in markdown format.
+10. Clearly delineate topics and subtopics with proper headings.
+11. Explain concepts with examples and use cases when provided in the PDF.
+12. Break down complex topics into digestible sections while maintaining technical accuracy.
+13. Do not include any introductory text or meta-commentary.`
 
 
 export const chatWindowSizes: Record<string, ChatWindowSizeType> = {
