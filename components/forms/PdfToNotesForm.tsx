@@ -14,6 +14,8 @@ import { SerializedCourse } from "@/types/course"
 import { pdfNotesSchema } from "@/lib/schemas/pdfNotesSchema"
 import { PdfNotesFormData } from "@/types/forms"
 import axios from "axios"
+import { type PutBlobResult } from '@vercel/blob';
+import { upload } from '@vercel/blob/client';
 
 interface PdfNotesFormProps {
   isOpen: boolean;
@@ -36,28 +38,33 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
 
   const onSubmit = async (values: PdfNotesFormData) => {
     try {
-      setGlobalError("")
+      const file = values.pdfFile;
+      setGlobalError("");
+
+      // Create course if it doesn't exist
       if (courses.length === 0) {
         await createCourse({
           name: values.course,
           description: "",
-        })
+        });
       }
-      const formData = new FormData()
-      formData.append('pdfFile', values.pdfFile)
-      formData.append('course', values.course)
+      const clientPayload = JSON.stringify({
+        course: values.course, // Pass the course name to the server
+      });
 
-      const response = await axios.post("/api/notes/pdf", formData, {
-          headers: {
-              'Content-Type': 'multipart/form-data',
-          },
-      })
-      onClose()
-      window.location.href = `/notes/${values.course}`
+      // Upload PDF to Vercel Blob with course name as clientPayload
+      const newBlob = await upload(file.name, file, {
+        access: 'public',
+        handleUploadUrl: '/api/notes/pdf',
+        clientPayload
+      });
+
+      onClose();
+      window.location.href = `/notes/${values.course}`;
     } catch (error: any) {
-      setGlobalError(error?.response?.data?.error || "Something went wrong. Please try again.")
+      setGlobalError(error?.message || "Something went wrong. Please try again.");
     }
-  }
+  };
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault()

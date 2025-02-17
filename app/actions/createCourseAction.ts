@@ -34,7 +34,8 @@ export async function createCourse(values: CreateCourseFormData) {
         return { success: "Course created successfully", course };
 
 
-    } catch (error) {
+    } catch (error:any) {
+        console.log(error.stack)
         throw error;
     }
 

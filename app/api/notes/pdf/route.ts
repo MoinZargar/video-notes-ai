@@ -1,58 +1,66 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { NextResponse } from "next/server";
-import { pdfNotesSchema } from "@/lib/schemas/pdfNotesSchema";
-import { uploadPdf } from "@/lib/uploadPdf";
-import { generateNotesFromPDF } from "@/lib/notes";
-import  db  from "@/lib/prisma";
-import fs from "fs";
+import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
+import { del } from '@vercel/blob';
+import { NextResponse } from 'next/server';
+import db from '@/lib/prisma'; 
+import { generateNotesFromPDF } from '@/lib/notes';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+export async function POST(request: Request): Promise<NextResponse> {
+  const body = (await request.json()) as HandleUploadBody;
 
-export async function POST(req: Request) {
-    let uploadedPdf: any;
-    try {
-        const formData = await req.formData();
-        const pdfFile = formData.get("pdfFile") as File;
-        const course = formData.get("course") as string;
-
-        const session = await getServerSession(authOptions);
-        if (!session?.user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-        }
-
-        const validatedFields = pdfNotesSchema.safeParse({pdfFile, course});
-        if (!validatedFields.success) {
-            return NextResponse.json({ error: "Invalid fields" }, { status: 400 })
-        }
-        uploadedPdf = await uploadPdf(pdfFile, course)
-        if (!uploadedPdf.success) {
-            return NextResponse.json({ error: "Failed to upload PDF file" }, { status: 500 })
-        }
-         
-        const notes = await generateNotesFromPDF(uploadedPdf.filename , uploadedPdf.filepath)
-        const courseData = await db.course.findUnique({
-            where: {
-                name: course,
-            }
-        })
-        if (!courseData) {
-            return NextResponse.json({ error: "Course not found" }, { status: 404 })
-        }
-        const notesData = await db.notes.create({
-            data: {
-                content: notes,
-                source: "pdf",
-                userId: Number(session.user.id),    
-                courseId: courseData?.id,
-            }
-        })
-        // remove the pdf file from the server
-        fs.unlinkSync(uploadedPdf.filepath)
-        return NextResponse.json({message: "Notes generated successfully"}, { status: 200 })
-
-    } catch (error:any) {
-        console.log(error.message )
-        // remove the pdf file from the server
-        fs.unlinkSync(uploadedPdf.filepath)
-        return NextResponse.json({ error:error?.message || "Internal server error" }, { status: 500 })
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    const userId = Number(session?.user?.id);
+    const jsonResponse = await handleUpload({
+      body,
+      request,
+      onBeforeGenerateToken: async (pathname, clientPayload) => {
+        // Generate a token for the client to upload the file
+        return {
+          allowedContentTypes: ['application/pdf'],
+          tokenPayload: clientPayload
+        };
+      },
+      onUploadCompleted: async ({ blob, tokenPayload }) => {
+        try {
+          
+            const { course } = JSON.parse(tokenPayload as string);
+          // Generate notes using the blob URL
+          const notes = await generateNotesFromPDF(blob.pathname,blob.url);
+          console.log(notes);
+          const courseData = await db.course.findFirst({
+            where: {
+              name: course,
+              userId: userId
+            }
+          })
+          if (!courseData) {
+             throw new Error('Course not found');
+          }
+          const NotesData = await db.notes.create({
+            data: {
+              content: notes,
+              source: "pdf",
+              courseId: courseData.id,
+              userId: userId
+            }
+          })
+
+          // Delete the blob after processing
+          await del(blob.url);
+        } catch (error) {
+          throw new Error('Failed to generate notes or update database');
+        }
+      },
+    });
+    return NextResponse.json(jsonResponse);
+  } catch (error) {
+    return NextResponse.json(
+      { error: (error as Error).message },
+      { status: 400 }
+    );
+  }
 }

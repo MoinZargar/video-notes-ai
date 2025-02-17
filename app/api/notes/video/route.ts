@@ -48,7 +48,7 @@ export async function POST(req: Request){
 
         return NextResponse.json({
             success: true,
-            notes: notes
+            message: "Notes generated successfully"
         }, { status: 200 });
 
     } catch(error:any) {
