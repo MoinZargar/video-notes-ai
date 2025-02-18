@@ -14,7 +14,6 @@ import { SerializedCourse } from "@/types/course"
 import { pdfNotesSchema } from "@/lib/schemas/pdfNotesSchema"
 import { PdfNotesFormData } from "@/types/forms"
 import axios from "axios"
-import { type PutBlobResult } from '@vercel/blob';
 import { upload } from '@vercel/blob/client';
 
 interface PdfNotesFormProps {
@@ -25,7 +24,6 @@ interface PdfNotesFormProps {
 
 export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFormProps) {
   const [globalError, setGlobalError] = useState<any>(null)
-  const [dragActive, setDragActive] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   const form = useForm<PdfNotesFormData>({
@@ -34,6 +32,7 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
       pdfFile: undefined,
       course: "",
     },
+    mode: "onChange", // Enable validation on change
   })
 
   const onSubmit = async (values: PdfNotesFormData) => {
@@ -49,15 +48,14 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
         });
       }
       const clientPayload = JSON.stringify({
-        course: values.course, // Pass the course name to the server
+        course: values.course,
       });
 
-      // Step 1: Upload PDF to Vercel Blob
       const newBlob = await upload(file.name, file, {
         access: 'public',
         handleUploadUrl: '/api/upload/pdf',
       });
-      //Step 2: Generate Notes from PDF
+      
       const notesResponse = await axios.post('/api/notes/pdf', {
         blobUrl: newBlob.url,
         course: values.course,
@@ -65,34 +63,10 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
       onClose();
       window.location.href = `/notes/${values.course}`;
     } catch (error: any) {
-      console.log("error  ",error?.response?.data?.error)
+      console.log("error  ", error?.response?.data?.error)
       setGlobalError("Something went wrong. Please try again.");
     }
   };
-
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true)
-    } else if (e.type === "dragleave") {
-      setDragActive(false)
-    }
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const file = e.dataTransfer.files[0]
-      if (file.type === "application/pdf") {
-        setSelectedFile(file)
-        form.setValue("pdfFile", file)
-      }
-    }
-  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -119,48 +93,44 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
                 <FormItem className="mb-6">
                   <FormLabel className="text-base font-medium">Upload PDF</FormLabel>
                   <FormControl>
-                    <div
-                      className={`relative border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors
-                        ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
-                        ${selectedFile ? 'bg-gray-50' : ''}`}
-                      onDragEnter={handleDrag}
-                      onDragLeave={handleDrag}
-                      onDragOver={handleDrag}
-                      onDrop={handleDrop}
-                      onClick={() => document.getElementById('pdf-upload')?.click()}
-                    >
-                      <Input
-                        id="pdf-upload"
-                        type="file"
-                        accept=".pdf"
-                        className="hidden"
-                        onChange={(e) => {
-                          if (e.target.files?.[0]) {
-                            setSelectedFile(e.target.files[0])
-                            onChange(e.target.files[0])
-                          }
-                        }}
-                        {...field}
-                      />
-                      <div className="flex flex-col items-center justify-center space-y-3">
-                        <Upload className="h-10 w-10 text-gray-400" />
-                        {selectedFile ? (
-                          <>
-                            <p className="text-sm text-gray-600">Selected file: {selectedFile.name}</p>
-                            <p className="text-xs text-gray-500">Click or drag to replace</p>
-                          </>
-                        ) : (
-                          <>
-                            <p className="text-sm font-medium text-gray-600">
-                              Click to upload or drag and drop
-                            </p>
-                            <p className="text-xs text-gray-500">PDF files only</p>
-                          </>
-                        )}
+                    <div className={`border rounded-lg p-6 ${form.formState.errors.pdfFile ? 'border-red-500' : 'border-gray-300'}`}>
+                      <div className="flex flex-col items-center justify-center space-y-4">
+                        <Upload className="h-8 w-8 text-gray-400" />
+                        <div className="text-center">
+                          {selectedFile ? (
+                            <p className="text-sm text-gray-600 mb-2">{selectedFile.name}</p>
+                          ) : (
+                            <p className="text-sm text-gray-600 mb-2">No file selected</p>
+                          )}
+                          <Input
+                            id="pdf-upload"
+                            type="file"
+                            accept=".pdf"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                setSelectedFile(file);
+                                // Set value and trigger validation immediately
+                                onChange(file);
+                                form.trigger("pdfFile");
+                              }
+                            }}
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => document.getElementById('pdf-upload')?.click()}
+                            className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          >
+                            Choose PDF
+                          </button>
+                          <p className="text-xs text-gray-500 mt-2">PDF files only, max 15MB</p>
+                        </div>
                       </div>
                     </div>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500 mt-2" />
                 </FormItem>
               )}
             />

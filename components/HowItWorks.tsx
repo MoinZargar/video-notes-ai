@@ -1,11 +1,12 @@
 import { howItWorksData } from "@/lib/data"
-import { Youtube, FileText, Download, HelpCircle } from "lucide-react"
+import { Youtube, FileText, Download, HelpCircle, Upload } from "lucide-react"
 
 const iconMap = {
   Youtube,
   FileText,
   Download,
   HelpCircle,
+  Upload,
 }
 
 export default function HowItWorks() {
@@ -31,4 +32,3 @@ export default function HowItWorks() {
     </section>
   )
 }
-

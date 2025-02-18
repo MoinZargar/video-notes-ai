@@ -13,8 +13,8 @@ export const headerData = {
 }
 
 export const heroData = {
-  title: "Transform Video Lectures into Detailed Notes with AI",
-  subtitle: "Get structured, comprehensive notes from YouTube videos in minutes",
+  title: "Transform Learning Materials into Detailed Notes with AI",
+  subtitle: "Get structured, comprehensive notes from YouTube videos or PDF documents in seconds",
   ctaText: "Get Started",
   ctaLink: "/signup",
 }
@@ -22,7 +22,7 @@ export const heroData = {
 export const featuresData = [
   {
     title: "AI-Powered Note Generation",
-    description: "Our advanced AI transforms YouTube video lectures into detailed, structured notes.",
+    description: "Transform YouTube video lectures and PDF documents into detailed, structured notes",
     icon: "BrainCircuit",
   },
   {
@@ -45,14 +45,14 @@ export const featuresData = [
 export const howItWorksData = [
   {
     step: 1,
-    title: "Enter YouTube Video",
-    description: "Paste the URL of the YouTube video lecture you want to study.",
-    icon: "Youtube",
+    title: "Add Learning Material",
+    description: "Upload a PDF document or paste the URL of the YouTube video lecture you want to study.",
+    icon: "Upload",
   },
   {
     step: 2,
     title: "Generate AI Notes",
-    description: "Our AI system creates detailed, structured notes from the video content.",
+    description: "Our AI system creates detailed, structured notes from your video or PDF content.",
     icon: "FileText",
   },
   {
@@ -71,24 +71,24 @@ export const howItWorksData = [
 
 export const faqData = [
   {
-    question: "How accurate are the AI-generated notes?",
+    question: "What is the accuracy of AI-generated notes from video and PDF sources?",
     answer:
-      "The generated notes are highly accurate. Each and every concept discussed in the video lecture is explained in full detail and in the same tone, ensuring nothing is skipped.",
+      "AI-generated notes from video and PDF sources are highly accurate. Each concept discussed in the video lecture or PDF document is thoroughly explained in detail, ensuring comprehensive coverage.",
   },
   {
     question: "Can I use any YouTube video?",
     answer:
-      "Yes, you can use any publicly available YouTube video. However, we cannot generate notes for private videos.",
+      "Yes, you can use any publicly available YouTube video. However, we cannot generate notes for private youtube videos.",
+  },
+  {
+    question: "Can we also generate notes from our handwritten PDFs?",
+    answer:
+      "Yes, you can convert handwritten PDF files into AI-generated notes.",
   },
   {
     question: "How does the AI chatbot work?",
     answer:
       "Our AI chatbot uses advanced natural language processing to understand your questions and provide relevant answers based on the content of your notes and additional knowledge sources.",
-  },
-  {
-    question: "Can we generate notes from our handwritten notes also?",
-    answer:
-      "Currently, we don't have this feature but we are working on it and will soon add this feature as well.",
   },
 ]
 

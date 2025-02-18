@@ -26,12 +26,20 @@ export default function Header() {
   }
 
   const authButtons = isLoggedIn ? (
-    <button
-      onClick={handleSignOut}
-      className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-    >
-      Sign out
-    </button>
+    <>
+      <Link
+        href="/dashboard"
+        className="px-6 py-2 text-gray-700 hover:text-gray-900 border border-gray-300 rounded-md hover:border-gray-400 transition-colors"
+      >
+        Dashboard
+      </Link>
+      <button
+        onClick={handleSignOut}
+        className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+      >
+        Sign out
+      </button>
+    </>
   ) : (
     <div className="flex items-center space-x-4">
       <Link
@@ -50,12 +58,21 @@ export default function Header() {
   )
 
   const mobileAuthButtons = isLoggedIn ? (
-    <button
-      onClick={handleSignOut}
-      className="block w-full px-6 py-2 text-center bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-    >
-      Sign out
-    </button>
+    <>
+      <Link
+        href="/dashboard"
+        className="block w-full px-6 py-2 text-center text-gray-700 border border-gray-300 rounded-md hover:border-gray-400 hover:text-gray-900 transition-colors"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        Dashboard
+      </Link>
+      <button
+        onClick={handleSignOut}
+        className="block w-full px-6 py-2 text-center bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+      >
+        Sign out
+      </button>
+    </>
   ) : (
     <div className="w-full max-w-xs space-y-2 pt-4">
       <Link
