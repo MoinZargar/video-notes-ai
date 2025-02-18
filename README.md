@@ -1,6 +1,9 @@
 # YouTube Lectures to AI Notes Converter
 
-Convert YouTube educational content into well-structured, downloadable notes using AI. It also includes an AI assistant to help understand the content and resolve doubts.
+This tool has three main features:
+- It converts YouTube educational content into well-structured, downloadable notes.
+- It converts typed/handwritten PDFs into well-structured, downloadable notes.
+- It features an AI-powered tutor to aid in understanding the content and resolving doubts.
 
 ## Installation
 
