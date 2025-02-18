@@ -111,7 +111,7 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
                               const file = e.target.files?.[0];
                               if (file) {
                                 setSelectedFile(file);
-                                // Set value and trigger validation immediately
+      
                                 onChange(file);
                                 form.trigger("pdfFile");
                               }
@@ -125,7 +125,8 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
                           >
                             Choose PDF
                           </button>
-                          <p className="text-xs text-gray-500 mt-2">PDF files only, max 15MB</p>
+                          <p className="text-xs text-gray-500 mt-4">PDF files only, max 15MB</p>
+                          <p className="text-xs text-gray-500 mt-2">Both typed and handwritten PDFs are supported.</p>
                         </div>
                       </div>
                     </div>

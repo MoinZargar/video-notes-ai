@@ -13,8 +13,8 @@ export const headerData = {
 }
 
 export const heroData = {
-  title: "Transform Learning Materials into Detailed Notes with AI",
-  subtitle: "Get structured, comprehensive notes from YouTube videos or PDF documents in seconds",
+  title: "Transform Learning Material into Detailed Notes with AI",
+  subtitle: "Instantly transform YouTube videos and PDF documents into detailed, organized notes",
   ctaText: "Get Started",
   ctaLink: "/signup",
 }

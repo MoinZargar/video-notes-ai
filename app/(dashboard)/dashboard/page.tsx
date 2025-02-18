@@ -16,7 +16,7 @@ export default async function DashboardPage() {
             Welcome back, {userName ? `${userName.charAt(0).toUpperCase()}${userName.slice(1)}` : 'User'} <span className="inline-block animate-wave">👋</span>
           </h1>
           <p className="text-muted-foreground mt-2">
-            Create AI-powered study notes from YouTube lectures
+            Create AI-powered study notes 
           </p>
         </div>
           <DashboardContent courses={courses} />
