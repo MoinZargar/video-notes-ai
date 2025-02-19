@@ -12,11 +12,11 @@ export async function createCourse(values: CreateCourseFormData) {
             throw new Error("Unauthorized request");
         }
         
-        const { name, description } = values;
         const validatedFields = createCourseSchema.safeParse(values);
         if (!validatedFields.success) {
             throw new Error("Invalid fields");
         }
+        const { name, description } = validatedFields.data;
         //check if course already exists
         const courseExists = await db.course.findFirst({
             where: { name, userId: Number(session.user.id) }
