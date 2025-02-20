@@ -36,7 +36,6 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
   const onSubmit = async (values: VideoNotesFormData) => {
     try {
       setGlobalError("")
-
       // Create course if it doesn't exist
       if (courses.length === 0) {
         const response = await createCourse({

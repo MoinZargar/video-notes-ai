@@ -40,7 +40,6 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
     try {
       const file = values.pdfFile;
       setGlobalError("");
-
       // Create course if it doesn't exist
       if (courses.length === 0) {
         await createCourse({
@@ -48,15 +47,12 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
           description: "",
         });
       }
-      const clientPayload = JSON.stringify({
-        course: values.course,
-      });
 
       const newBlob = await upload(file.name, file, {
         access: 'public',
         handleUploadUrl: '/api/upload/pdf',
       });
-      
+
       const notesResponse = await axios.post('/api/notes/pdf', {
         blobUrl: newBlob.url,
         course: values.course,

@@ -13,5 +13,7 @@ export const pdfNotesSchema = z.object({
             message: "File size should not exceed 15MB"
         }),
 
-    course: z.string().min(1, "Course name is required"),
+    course: z.string().min(1, "Course name is required")
+    .toLowerCase()
+    .trim(),
 });
