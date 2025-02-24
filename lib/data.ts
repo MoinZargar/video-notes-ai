@@ -5,6 +5,7 @@ export const headerData = {
     { name: "Features", href: "#features" },
     { name: "How It Works", href: "#how-it-works" },
     { name: "FAQ", href: "#faq" },
+    { name: "Contact us", href: "#contact" },
   ],
   authItems: [
     { name: "Signup", href: "/signup" },
@@ -13,8 +14,8 @@ export const headerData = {
 }
 
 export const heroData = {
-  title: "Transform Learning Material into Detailed Notes with AI",
-  subtitle: "Instantly transform YouTube videos and PDF documents into detailed, organized notes",
+  title: "Let AI Take Notes For You",
+  subtitle: "Transform YouTube videos and PDF documents into detailed, organized notes with AI",
   ctaText: "Get Started",
   ctaLink: "/signup",
 }
