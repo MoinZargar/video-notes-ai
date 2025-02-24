@@ -1,4 +1,4 @@
-import { NextAuthOptions,  Account, Profile, User as NextAuthUser,Session, User,} from "next-auth"
+import { NextAuthOptions, Account, Profile, User as NextAuthUser, Session, User, } from "next-auth"
 import type { JWT } from "next-auth/jwt"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from 'next-auth/providers/google'
@@ -81,10 +81,10 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile }
-      : { 
+      : {
         user: User,
         account: Account | null,
-        profile?: Profile | undefined 
+        profile?: Profile | undefined
       }
     ) {
       try {
@@ -107,14 +107,27 @@ export const authOptions: NextAuthOptions = {
           }
           //new user signing up through oAuth 
           else {
-            await db.user.create({
-              data: {
-                email: user.email as string,
-                name: user.name || null,
-                isOAuthUser: true,
-                provider: account.provider.toUpperCase() as Provider
-              }
-            });
+            await db.$transaction(async (tx) => {
+              const User = await tx.user.create({
+                data: {
+                  email: user.email as string,
+                  name: user.name || null,
+                  isOAuthUser: true,
+                  provider: account.provider.toUpperCase() as Provider
+                }
+              });
+              //intialize the subscription and daily usage models
+              const Subscription = await tx.subscription.create({
+                data: {
+                  userId: User?.id
+                }
+              })
+              const DailyUsage = await tx.dailyUsage.create({
+                data: {
+                  subscriptionId: Subscription?.id
+                }
+              })
+            })
           }
         }
         return true;
@@ -123,21 +136,21 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
     },
-    async session({ session,token}
-      :{
-        session:Session,
-        user:User,
+    async session({ session, token }
+      : {
+        session: Session,
+        user: User,
         token: JWT,
 
 
       }
     ) {
       const user = await db.user.findUnique({
-        where:{
-          email:session.user.email
+        where: {
+          email: session.user.email
         }
       });
-      if(!user){
+      if (!user) {
         throw new Error("User not found");
       }
       session.user.id = String(user.id);
@@ -145,16 +158,16 @@ export const authOptions: NextAuthOptions = {
       session.user.provider = user.provider;
       session.user.isOAuthUser = user.isOAuthUser;
       return session;
-      
+
     },
-    async jwt({ token,  account }:
+    async jwt({ token, account }:
       {
         token: JWT,
         account: Account | null
 
       }
     ) {
-    
+
       if (account) {
         token.provider = account.provider;
       }

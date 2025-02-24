@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server';
 import db from '@/lib/prisma';
 import { signUpSchema } from '@/lib/schemas/authSchema';
 import bcrypt from 'bcrypt';
-import { Provider } from '@prisma/client';
+import { Provider, User } from '@prisma/client';
 import { SignUpFormData } from '@/types/forms';
 
 
 export async function POST(req: Request) {
   try {
-    const body:SignUpFormData = await req.json();
+    const body: SignUpFormData = await req.json();
     const validatedData = signUpSchema.safeParse(body);
     if (!validatedData.success) {
       return NextResponse.json(
@@ -16,9 +16,9 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-    const {name, email, password} = validatedData.data; 
+    const { name, email, password } = validatedData.data;
     const existingUser = await db.user.findUnique({
-        where: { email: email }
+      where: { email: email }
     });
 
     if (existingUser) {
@@ -28,24 +28,36 @@ export async function POST(req: Request) {
       );
     }
 
-    
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await db.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        provider:Provider.CREDENTIALS
-      }
-    });
+    await db.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+          provider: Provider.CREDENTIALS
+        }
+      });
+      //initialize the susbscription and daily usage model
+      const susbscription = await tx.subscription.create({
+        data: {
+          userId: user.id
+        }
+      })
+      const dailyUsage = await tx.dailyUsage.create({
+        data: {
+          subscriptionId: susbscription.id
+        }
+      })
+    })
 
     return NextResponse.json(
-      { 
+      {
         success: true,
         user: {
-          id: user.id,
-          email: user.email,
-          name: user.name
+          email: email,
+          name: name
         }
       },
       { status: 201 }

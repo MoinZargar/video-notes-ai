@@ -20,11 +20,45 @@ model User {
   password      String?   
   provider      Provider?
   isOAuthUser   Boolean   @default(false)
+  subscription  Subscription?
   courses       Course[]
   notes         Notes[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  @@index([email])
 }
+
+model Subscription {
+  id            Int             @id @default(autoincrement())
+  userId        Int             @unique
+  customerId    String?  @unique
+  plan          SubscriptionPlan @default(BASIC)
+  status        SubscriptionStatus @default(FREE)
+  startDate     DateTime        @default(now())
+  endDate       DateTime?
+  canceledAt    DateTime?
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  dailyUsage    DailyUsage[]
+  
+  @@index([userId])
+}
+
+model DailyUsage {
+  id         Int      @id @default(autoincrement())
+  subscriptionId Int
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+  date       DateTime @default(now())
+  videoCount Int      @default(0)
+  pdfCount   Int      @default(0)
+  chatCount  Int      @default(0)
+   
+  @@unique([subscriptionId, date])
+  @@index([subscriptionId])
+}
+
 
 model Course {
   id            Int    @id @default(autoincrement())
@@ -37,10 +71,11 @@ model Course {
   user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@index([userId]) 
+  @@unique([name, userId])
 }
 
 model Notes {
-  id            Int    @id @default(autoincrement())
+  id            Int    @id @default(autoincrement()) @unique
   videoUrl      String?
   content       String
   source        SourceType 
@@ -63,4 +98,16 @@ enum Provider {
     CREDENTIALS
     GOOGLE
     GITHUB
+}
+
+enum SubscriptionPlan {
+  BASIC
+  MONTLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  FREE
 }
