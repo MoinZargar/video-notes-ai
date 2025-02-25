@@ -50,13 +50,13 @@ const PrivacyPolicyPage: NextPage = () => {
           </ul>
                  
           
-          <h2 className="text-xl font-semibold mt-8 mb-4">6. Cookies</h2>
+          <h2 className="text-xl font-semibold mt-8 mb-4">5. Cookies</h2>
           <p className="mb-4">
             We use cookies to enhance your experience on our website. These cookies are essential for the functioning
             of our service and help us understand how you interact with our website.
           </p>
           
-          <h2 className="text-xl font-semibold mt-8 mb-4">7. Contact Information</h2>
+          <h2 className="text-xl font-semibold mt-8 mb-4">6. Contact Information</h2>
           <p className="mb-2">
             If you have any questions or concerns about our Privacy Policy, please contact us:
           </p>
