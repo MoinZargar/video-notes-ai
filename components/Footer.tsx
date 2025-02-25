@@ -41,7 +41,7 @@ export default function Footer() {
           </section>
         </div>
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p className="text-gray-400 text-sm">&copy; {new Date().getFullYear()} AI Notes. All rights reserved.</p>
+          <p className="text-gray-400 text-sm">&copy; {new Date().getFullYear()} NotesAI. All rights reserved.</p>
           <div className="mt-4 flex flex-wrap justify-center gap-8">
             <Link href="/refund-policy" className="text-gray-400 hover:text-white text-sm">
               Cancellation & Refund
