@@ -15,6 +15,9 @@ import { pdfNotesSchema } from "@/lib/schemas/pdfNotesSchema"
 import { PdfNotesFormData } from "@/types/forms"
 import axios from "axios"
 import { upload } from '@vercel/blob/client';
+import { useRouter } from 'next/navigation'
+import { useDispatch } from "react-redux";
+import { addCourse } from "@/store/coursesSlice";
 
 
 interface PdfNotesFormProps {
@@ -26,6 +29,8 @@ interface PdfNotesFormProps {
 export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFormProps) {
   const [globalError, setGlobalError] = useState<any>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const router = useRouter()
+  const dispatch = useDispatch()
 
   const form = useForm<PdfNotesFormData>({
     resolver: zodResolver(pdfNotesSchema),
@@ -42,10 +47,16 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
       setGlobalError("");
       // Create course if it doesn't exist
       if (courses.length === 0) {
-        await createCourse({
+        const response = await createCourse({
           name: values.course,
           description: "",
         });
+        const serializedCourse = {
+          ...response.course,
+          createdAt: response.course.createdAt.toISOString(),
+          updatedAt: response.course.updatedAt.toISOString(),
+        };
+        dispatch(addCourse(serializedCourse));
       }
 
       const newBlob = await upload(file.name, file, {
@@ -58,7 +69,7 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
         course: values.course,
       })
       onClose();
-      window.location.href = `/notes/${values.course}`;
+      router.push(`/notes/${values.course}`)
     } catch (error: any) {
       console.log("error  ", error?.response?.data?.error)
       setGlobalError("Something went wrong. Please try again.");
@@ -108,7 +119,7 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
                               const file = e.target.files?.[0];
                               if (file) {
                                 setSelectedFile(file);
-      
+
                                 onChange(file);
                                 form.trigger("pdfFile");
                               }

@@ -14,6 +14,9 @@ import axios from "axios"
 import { LoaderPinwheelIcon } from "lucide-react"
 import LoadingButton from "@/components/LoadingButton"
 import { SerializedCourse } from "@/types/course"
+import { useRouter } from "next/navigation"
+import { useDispatch } from "react-redux"
+import { addCourse } from "@/store/coursesSlice"
 
 
 interface VideoToNotesFormProps {
@@ -24,6 +27,8 @@ interface VideoToNotesFormProps {
 
 export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNotesFormProps) {
   const [globalError, setGlobalError] = useState<any>(null)
+  const router = useRouter()
+  const dispatch = useDispatch()
 
   const form = useForm<VideoNotesFormData>({
     resolver: zodResolver(videoNotesSchema),
@@ -42,6 +47,13 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
           name: values.course,
           description: "",
         })
+
+        const serializedCourse = {
+          ...response.course,
+          createdAt: response.course.createdAt.toISOString(),
+          updatedAt: response.course.updatedAt.toISOString(),
+        };
+        dispatch(addCourse(serializedCourse));
       }
 
       // Transcribe video
@@ -61,7 +73,7 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
         // Redirect to notes page
         if (notesResponse?.status === 200) { 
           onClose()
-          window.location.href = `/notes/${values.course}`
+          router.push(`/notes/${values.course}`)
         } else {
           setGlobalError("Failed to create notes. Please try again.")
         }
