@@ -13,6 +13,7 @@ export const generateVideoNotes = async (transcript: string[] | undefined):Promi
         }
         return notes;
     } catch (error: any) {
+        console.log("error ",error.stack)
         throw new Error(error.errorDetails[1]?.message)
     }
 }

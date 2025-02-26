@@ -7,10 +7,11 @@ Strictly follow this exact structure for the response:
 1. Use "##" for main topics.
 2. Use "###" for subtopics.
 3. Use bullet points ("-") for key points where appropriate.
-
+4. Format mathematical formulas if present in markdown format
 Instructions:
 1. Write thorough explanations and definitions in well-structured paragraphs that fully explore each concept.
 2. Ensure comprehensive coverage of all topics and subtopics from the transcript.
+3. Always generate response in english language
 3. Present information primarily in detailed paragraphs that flow naturally.
 4. Include bullet points selectively when listing items or highlighting key takeaways.
 5. Stay focused on transcript content without adding external information.
