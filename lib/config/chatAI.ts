@@ -4,7 +4,7 @@ import  {GoogleGenerativeAI, HarmCategory, HarmBlockThreshold,} from "@google/ge
   const chatAI = new GoogleGenerativeAI(apiKey || "");
   
   const chatModel = chatAI.getGenerativeModel({
-    model: "gemini-2.0-flash-lite-preview-02-05",
+    model: "gemini-2.0-flash-lite",
   });
   
   const generationConfig = {
