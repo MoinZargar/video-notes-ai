@@ -39,10 +39,15 @@ export async function POST(req: Request) {
           provider: Provider.CREDENTIALS
         }
       });
+
+      const plan = await db.plan.findUnique({
+        where: { planId: process.env.BASIC_PLAN_ID!  },
+      });
       //initialize the susbscription and daily usage model
       const susbscription = await tx.subscription.create({
         data: {
-          userId: user.id
+          userId: user.id,
+          planId:  plan?.id || 1
         }
       })
       const dailyUsage = await tx.dailyUsage.create({

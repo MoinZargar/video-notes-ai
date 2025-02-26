@@ -32,18 +32,29 @@ model User {
 model Subscription {
   id            Int             @id @default(autoincrement())
   userId        Int             @unique
-  customerId    String?  @unique
-  plan          SubscriptionPlan @default(BASIC)
-  status        SubscriptionStatus @default(FREE)
+  planId        Int
+  customerId    String?   @unique
+  status        SubscriptionStatus @default(free)
   startDate     DateTime        @default(now())
   endDate       DateTime?
   canceledAt    DateTime?
+  plan          Plan             @relation(fields: [planId], references: [id])
   user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   dailyUsage    DailyUsage[]
   
   @@index([userId])
+}
+
+model Plan {
+  id              Int       @id @default(autoincrement()) 
+  name            PlanType  @unique
+  price           Int       
+  planId          String    @unique 
+  subscription    Subscription[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
 
 model DailyUsage {
@@ -100,14 +111,20 @@ enum Provider {
     GITHUB
 }
 
-enum SubscriptionPlan {
+enum PlanType {
   BASIC
   MONTLY
   YEARLY
 }
 
 enum SubscriptionStatus {
-  ACTIVE
-  CANCELED
-  FREE
+  created
+  authenticated
+  active
+  pending
+  halted
+  cancelled
+  completed
+  expired
+  free
 }

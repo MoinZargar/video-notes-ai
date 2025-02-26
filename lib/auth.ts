@@ -116,10 +116,16 @@ export const authOptions: NextAuthOptions = {
                   provider: account.provider.toUpperCase() as Provider
                 }
               });
+
+              const plan = await db.plan.findUnique({
+                where: { planId: process.env.BASIC_PLAN_ID!  },
+              });
+
               //intialize the subscription and daily usage models
               const Subscription = await tx.subscription.create({
                 data: {
-                  userId: User?.id
+                  userId: User?.id,
+                  planId: plan?.id || 1
                 }
               })
               const DailyUsage = await tx.dailyUsage.create({
