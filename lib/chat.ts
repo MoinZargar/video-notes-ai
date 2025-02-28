@@ -23,8 +23,9 @@ export const chatBot = async (message: string, history: ChatMessage[]): Promise<
         }
         return result.response.text();
     } catch (error: any) {
-        console.log(error)
-        throw new Error(error?.response?.data?.message || "Something went wrong while generating response")
+        console.log(error.stack)
+        console.log(error?.response?.data?.message)
+        throw new Error("Something went wrong while generating response")
     }
 }
 

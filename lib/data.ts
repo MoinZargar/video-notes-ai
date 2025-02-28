@@ -70,6 +70,28 @@ export const howItWorksData = [
   },
 ]
 
+export const plansData= [
+  {
+      name: 'Basic',
+      price: 0,
+      features: [
+          '2 AI Chats per day',
+          '2 PDF Uploads per day',
+          '2 YouTube Video Processing per day'
+      ]
+  },
+  {
+      name: 'Monthly',
+      price: 250,
+      features: [
+          'Unlimited AI Chats',
+          'Unlimited PDF Uploads (up to 15MB each)',
+          'Unlimited YouTube Video Processing'
+      ],
+      isPopular: true
+  }
+];
+
 export const faqData = [
   {
     question: "What is the accuracy of AI-generated notes from video and PDF sources?",

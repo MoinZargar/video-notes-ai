@@ -4,6 +4,9 @@ import db from '@/lib/prisma';
 import { generateNotesFromPDF } from '@/lib/notes';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { checkUsage } from '@/app/actions/checkUsage';
+import { error } from 'console';
+import { stat } from 'fs';
 
 export async function POST(req: Request): Promise<NextResponse> {
   const { blobUrl, course } = await req.json();
@@ -12,6 +15,10 @@ export async function POST(req: Request): Promise<NextResponse> {
 
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const dailyUsage = await checkUsage('pdf')
+    if(!dailyUsage.allowed){
+       return NextResponse.json({ error : dailyUsage.message},{ status:402 })
     }
     if (!blobUrl || !course) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -39,14 +46,14 @@ export async function POST(req: Request): Promise<NextResponse> {
     })
     // Delete the blob after processing
     await del(blobUrl);
-    return NextResponse.json({ message: 'Notes created successfully' });
+    return NextResponse.json({ message: 'Notes created successfully' }, {status: 200});
 
   } catch (error: any) {
     console.log("error", error.stack)
     await del(blobUrl);
     return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 400 }
+      { error: error?.message || "Something went wrong while processing pdf" },
+      { status: 500 }
     );
   }
 }

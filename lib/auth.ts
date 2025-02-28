@@ -130,7 +130,7 @@ export const authOptions: NextAuthOptions = {
               })
               const DailyUsage = await tx.dailyUsage.create({
                 data: {
-                  subscriptionId: Subscription?.id
+                  subscriptionId: Subscription?.id,
                 }
               })
             })

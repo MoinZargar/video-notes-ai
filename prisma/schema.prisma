@@ -59,14 +59,13 @@ model Plan {
 
 model DailyUsage {
   id         Int      @id @default(autoincrement())
-  subscriptionId Int
+  subscriptionId Int  @unique
   subscription   Subscription @relation(fields: [subscriptionId], references: [id])
   date       DateTime @default(now())
   videoCount Int      @default(0)
   pdfCount   Int      @default(0)
   chatCount  Int      @default(0)
    
-  @@unique([subscriptionId, date])
   @@index([subscriptionId])
 }
 

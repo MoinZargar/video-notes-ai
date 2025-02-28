@@ -14,7 +14,8 @@ export const generateVideoNotes = async (transcript: string[] | undefined):Promi
         return notes;
     } catch (error: any) {
         console.log("error ",error.stack)
-        throw new Error(error.errorDetails[1]?.message)
+        console.log(error.errorDetails[1]?.message)
+        throw new Error("Something went wrong while processing video")
     }
 }
 
@@ -38,6 +39,6 @@ export const generateNotesFromPDF= async (fileUrl: string):Promise<string>  => {
 
     } catch (error: any) {
         console.log("error", error.stack)
-        throw new Error(error.message || "Something went wrong while generating notes")
+        throw new Error("Something went wrong while processing pdf")
     }
 }

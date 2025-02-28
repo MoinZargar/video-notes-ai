@@ -80,7 +80,8 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
       }
     } catch (error: any) {
       console.log("error  ",error?.response?.data?.error)
-      setGlobalError("Something went wrong. Please try again.")
+      const message=error?.response?.data?.error
+      setGlobalError(message || "Something went wrong. Please try again.")
     }
   }
   return (

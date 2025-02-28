@@ -68,11 +68,13 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
         blobUrl: newBlob.url,
         course: values.course,
       })
+      console.log(notesResponse)
       onClose();
       router.push(`/notes/${values.course}`)
     } catch (error: any) {
       console.log("error  ", error?.response?.data?.error)
-      setGlobalError("Something went wrong. Please try again.");
+      const message=error?.response?.data?.error
+      setGlobalError(message || "Something went wrong. Please try again.");
     }
   };
 

@@ -44,8 +44,9 @@ export default function AIChatForm({ onMessage, history, setIsLoading, setError 
                 onMessage({ role: 'model', parts: [{ text: response.data.response }] })
             }
 
-        } catch (error) {
-            setError("Something went wrong while generating response")
+        } catch (error:any) {
+            const message=error?.response?.data?.error;
+            setError(message? message : "Something went wrong while generating response")
         } finally {
             setIsLoading(false)
         }
