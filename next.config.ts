@@ -10,11 +10,10 @@ const cspHeader = `
   base-uri 'self';
   form-action 'self';
   frame-ancestors 'none';
-  frame-src 'self' https://*.cloudflare.com https://*.turnstile.com;
-  connect-src 'self' https://*.cloudflare.com https://*.turnstile.com;
+  frame-src 'self' https://*.cloudflare.com https://*.turnstile.com https://*.youtube.com https://youtube.com;
+  connect-src 'self' https://*.cloudflare.com https://*.turnstile.com https://*.vercel-storage.com https://blob.vercel-storage.com;
   upgrade-insecure-requests;
 `
-
 
 const nextConfig: NextConfig = {
   async headers() {

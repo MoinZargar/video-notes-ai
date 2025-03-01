@@ -45,32 +45,34 @@ export default function SignupForm() {
                 setGlobalError("Please complete the CAPTCHA verification");
                 return;
             }
-            const response = await axios.post('/api/auth/signup',
+            const signUpResponse = await axios.post('/api/auth/signup',
                 {
                     ...values,
                     captchaToken: token
                 }
             );
-            if (response) {
+            if (signUpResponse) {
                 const data = {
                     email: values.email,
                     password: values.password,
                     captchaToken : token 
                 }
-                await signIn(
+                const signInResponse= await signIn(
                     "credentials",
                     { redirect: false, ...data }
                 );
+                if (signInResponse?.error) {
+                    setGlobalError('Something went wrong. Please SignIn again');
+                    ref.current?.reset();
+                    setToken("");
+                    return;
+                }
             }
-            // Reset form after successful submission
-            form.reset();
-            ref.current?.reset();
-            setToken("");
+            
             router.push("/dashboard");
         } catch (error: any) {
             setGlobalError(error?.response?.data?.error || 'Internal server error');
-            // Reset form on error
-            form.reset();
+        
             ref.current?.reset();
             setToken("");
         }

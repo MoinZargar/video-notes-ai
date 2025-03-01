@@ -44,22 +44,19 @@ export default function SignInForm() {
             }
             const response = await signIn(
                 "credentials",
-                { redirect: false, ...values, captchaToken :token }
+                { redirect: false, ...values, captchaToken: token }
             );
 
             if (response?.error) {
                 setGlobalError('Incorrect email or password.');
+                ref.current?.reset();
+                setToken("");
                 return;
             }
-            // Reset form after successful submission
-            form.reset();
-            ref.current?.reset();
-            setToken("");
+            
             router.push("/dashboard");
-        } catch (error:any) {
+        } catch (error: any) {
             setGlobalError(error?.response?.data?.error || 'Internal server error');
-            // Reset form on error
-            form.reset();
             ref.current?.reset();
             setToken("");
         }
