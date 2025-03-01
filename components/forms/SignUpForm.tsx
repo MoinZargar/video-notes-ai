@@ -1,4 +1,5 @@
-import { useState } from "react";
+'use client'
+import { useRef, useState } from "react";
 import {
     Form,
     FormControl,
@@ -18,10 +19,13 @@ import axios from "axios";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile'
 
 
 export default function SignupForm() {
     const [globalError, setGlobalError] = useState<string>("");
+    const [token, setToken] = useState<string>("")
+    const ref = useRef<TurnstileInstance | null>(null)
     const router = useRouter();
     const form = useForm<z.infer<typeof signUpSchema>>({
         resolver: zodResolver(signUpSchema),
@@ -29,26 +33,46 @@ export default function SignupForm() {
             name: "",
             email: "",
             password: "",
+            captchaToken:""
         },
     });
 
     const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
         try {
             setGlobalError("");
-            const response = await axios.post('/api/auth/signup', values);
+        
+            if (!token) {
+                setGlobalError("Please complete the CAPTCHA verification");
+                return;
+            }
+            const response = await axios.post('/api/auth/signup',
+                {
+                    ...values,
+                    captchaToken: token
+                }
+            );
             if (response) {
                 const data = {
                     email: values.email,
-                    password: values.password
+                    password: values.password,
+                    captchaToken : token 
                 }
                 await signIn(
                     "credentials",
                     { redirect: false, ...data }
                 );
             }
+            // Reset form after successful submission
+            form.reset();
+            ref.current?.reset();
+            setToken("");
             router.push("/dashboard");
         } catch (error: any) {
             setGlobalError(error?.response?.data?.error || 'Internal server error');
+            // Reset form on error
+            form.reset();
+            ref.current?.reset();
+            setToken("");
         }
     };
 
@@ -114,8 +138,19 @@ export default function SignupForm() {
                             </FormItem>
                         )}
                     />
+                    <div className="w-full flex justify-center">
+                        <Turnstile
+                            ref={ref}
+                            onSuccess={(token) => setToken(token)}
+                            siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
+                            onExpire={() => ref.current?.reset()}
+                            onError={(error)=>{
+                                setGlobalError(error)
+                            }}
+                        />
+                    </div>
                     <LoadingButton
-                        pending={form.formState.isSubmitting}
+                        pending={!token || form.formState.isSubmitting}
                     >
                         Sign up
                     </LoadingButton>

@@ -16,6 +16,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@google/generative-ai": "^0.21.0",
     "@hookform/resolvers": "^3.10.0",
+    "@marsidev/react-turnstile": "^1.1.0",
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@paypal/paypal-server-sdk": "^0.6.1",
     "@paypal/react-paypal-js": "^8.8.2",

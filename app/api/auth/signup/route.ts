@@ -16,11 +16,27 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-    const { name, email, password } = validatedData.data;
+    const { name, email, password, captchaToken } = validatedData.data;
+
+    // verify captcha token
+    const res = await fetch(process.env.CLOUDFLARE_VERIFY_TOKEN_ENDPOINT!, {
+      method: 'POST',
+      body: `secret=${encodeURIComponent(process.env.CLOUDFLARE_SECRET_KEY!)}&response=${encodeURIComponent(captchaToken)}`,
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded'
+      }
+    })
+    const verifyToken = await res.json()
+    
+    if (!verifyToken.success) {
+      return NextResponse.json(
+        { error: 'Invalid Captcha Token'},
+        { status:400}
+      )
+    }
     const existingUser = await db.user.findUnique({
       where: { email: email }
     });
-
     if (existingUser) {
       return NextResponse.json(
         { error: 'User already exists' },
@@ -39,15 +55,15 @@ export async function POST(req: Request) {
           provider: Provider.CREDENTIALS
         }
       });
-
+  
       const plan = await db.plan.findUnique({
-        where: { planId: process.env.BASIC_PLAN_ID!  },
+        where: { planId: process.env.NEXT_PUBLIC_BASIC_PLAN_ID! },
       });
       //initialize the susbscription and daily usage model
       const susbscription = await tx.subscription.create({
         data: {
           userId: user.id,
-          planId:  plan?.id || 1
+          planId: plan?.id || 1
         }
       })
       const dailyUsage = await tx.dailyUsage.create({

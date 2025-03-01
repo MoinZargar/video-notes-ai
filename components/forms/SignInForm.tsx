@@ -1,4 +1,5 @@
-import { useState } from "react";
+'use client'
+import { useRef, useState } from "react";
 import {
     Form,
     FormControl,
@@ -17,34 +18,50 @@ import ErrorMessage from "@/components/ErrorMessage";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile'
 
 
 export default function SignInForm() {
     const [globalError, setGlobalError] = useState<string>("");
     const router = useRouter();
+    const ref = useRef<TurnstileInstance | null>(null)
+    const [token, setToken] = useState<string>("")
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
         defaultValues: {
             email: "",
             password: "",
+            captchaToken: ""
         },
     });
 
     const onSubmit = async (values: z.infer<typeof signInSchema>) => {
         try {
             setGlobalError("");
+            if (!token) {
+                setGlobalError("Please complete the CAPTCHA verification");
+                return;
+            }
             const response = await signIn(
                 "credentials",
-                { redirect: false, ...values }
+                { redirect: false, ...values, captchaToken :token }
             );
 
             if (response?.error) {
                 setGlobalError('Incorrect email or password.');
                 return;
             }
+            // Reset form after successful submission
+            form.reset();
+            ref.current?.reset();
+            setToken("");
             router.push("/dashboard");
-        } catch (error) {
-            setGlobalError('Internal server error');
+        } catch (error:any) {
+            setGlobalError(error?.response?.data?.error || 'Internal server error');
+            // Reset form on error
+            form.reset();
+            ref.current?.reset();
+            setToken("");
         }
     };
     return (
@@ -91,9 +108,17 @@ export default function SignInForm() {
                             </FormItem>
                         )}
                     />
-
+                    <Turnstile
+                        ref={ref}
+                        onSuccess={(token) => setToken(token)}
+                        siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
+                        onExpire={() => ref.current?.reset()}
+                        onError={(error) => {
+                            setGlobalError(error)
+                        }}
+                    />
                     <LoadingButton
-                        pending={form.formState.isSubmitting}
+                        pending={!token || form.formState.isSubmitting}
                     >
                         Sign in
                     </LoadingButton>
