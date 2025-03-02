@@ -31,20 +31,23 @@ export default function SignInForm() {
         defaultValues: {
             email: "",
             password: "",
-            captchaToken: ""
+            captchaToken: "",
+            isPostSignup:'false'
         },
     });
 
     const onSubmit = async (values: z.infer<typeof signInSchema>) => {
+        
         try {
             setGlobalError("");
             if (!token) {
                 setGlobalError("Please complete the CAPTCHA verification");
                 return;
             }
+            
             const response = await signIn(
                 "credentials",
-                { redirect: false, ...values, captchaToken: token }
+                { redirect: false, ...values, isPostSignup:'false', captchaToken: token }
             );
 
             if (response?.error) {

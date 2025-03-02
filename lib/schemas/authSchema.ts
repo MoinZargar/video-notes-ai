@@ -1,4 +1,4 @@
-import { object, string } from "zod";
+import { boolean, object, string } from "zod";
 
 export const signUpSchema = object({
     name: string({ required_error: "Name is required" })
@@ -31,5 +31,7 @@ export const signInSchema = object({
         .min(6, "Password must be atleast 6 characters")
         .max(32, "Password must be less than 32 characters")
         .trim(),
-    captchaToken: string()
+    captchaToken: string().optional(),
+    isPostSignup: string()
+    .trim()
 });

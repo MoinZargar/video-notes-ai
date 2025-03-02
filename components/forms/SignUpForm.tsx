@@ -45,6 +45,7 @@ export default function SignupForm() {
                 setGlobalError("Please complete the CAPTCHA verification");
                 return;
             }
+            
             const signUpResponse = await axios.post('/api/auth/signup',
                 {
                     ...values,
@@ -52,15 +53,17 @@ export default function SignupForm() {
                 }
             );
             if (signUpResponse) {
+                
                 const data = {
                     email: values.email,
                     password: values.password,
-                    captchaToken : token 
+                    isPostSignup: 'true'
                 }
                 const signInResponse= await signIn(
                     "credentials",
                     { redirect: false, ...data }
                 );
+                
                 if (signInResponse?.error) {
                     setGlobalError('Something went wrong. Please SignIn again');
                     ref.current?.reset();

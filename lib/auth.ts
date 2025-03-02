@@ -19,13 +19,15 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email: { label: "Email", type: "email", placeholder: "Email" },
         password: { label: "Password", type: "password", placeholder: "Password" },
-        captchaToken: { label: "Captcha Token", placeholder: "Captcha Token" }
+        captchaToken: { label: "Captcha Token", placeholder: "Captcha Token" },
+        isPostSignup: { label: "Source of SignIn request", placeholder: "Is Request Post Signup" }
       },
       async authorize(
         credentials: SignInFormData | undefined
       ): Promise<AuthUser | null> {
         try {
           //if user sign up through email and password
+
           if (!credentials) {
             return null;
           }
@@ -34,19 +36,25 @@ export const authOptions: NextAuthOptions = {
           if (!result.success) {
             return null;
           }
-          //verify the captcha token
-          const res = await fetch(process.env.CLOUDFLARE_VERIFY_TOKEN_ENDPOINT!, {
-            method: 'POST',
-            body: `secret=${encodeURIComponent(process.env.CLOUDFLARE_SECRET_KEY!)}&response=${encodeURIComponent(credentials?.captchaToken)}`,
-            headers: {
-              'content-type': 'application/x-www-form-urlencoded'
-            }
-          })
-          const verifyToken = await res.json()
+          // Check if this is a post-signup signin request
+          const isPostSignup = credentials.isPostSignup === 'true';
 
-          if (!verifyToken.success) {
-            return null
+          // Skip CAPTCHA verification for post-signup signin
+          if (!isPostSignup) {
+            // Verify the captcha token
+            const res = await fetch(process.env.CLOUDFLARE_VERIFY_TOKEN_ENDPOINT!, {
+              method: 'POST',
+              body: `secret=${encodeURIComponent(process.env.CLOUDFLARE_SECRET_KEY!)}&response=${encodeURIComponent(credentials.captchaToken || '')}`,
+              headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+              }
+            })
+            const verifyToken = await res.json()
+            if (!verifyToken.success) {
+              return null
+            }
           }
+
           const existingUser = await db.user.findFirst({
             where: {
               email: credentials.email,
