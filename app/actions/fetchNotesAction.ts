@@ -12,7 +12,9 @@ export default async function fetchNotesAction(course: string): Promise<Notes[]>
          throw new Error("Unauthorized request")
      }
      const userId = Number(session.user.id)
-     const Course = await db.course.findFirst({ where: { name: course, userId } })
+     const courseNameDecoded =decodeURIComponent(course);
+     
+     const Course = await db.course.findFirst({ where: { name: courseNameDecoded, userId } })
      const courseId = Number(Course?.id)
      if (!courseId || !userId) {
          throw new Error("Invalid course")

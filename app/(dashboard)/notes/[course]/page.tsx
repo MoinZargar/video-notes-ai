@@ -5,6 +5,7 @@ import fetchNotesAction from "@/app/actions/fetchNotesAction"
 export default async function NotesPage({ params }: {params: Promise<{course: string}>}) {
   try {
     const { course } =await params
+    const courseNameDecoded =decodeURIComponent(course);
     const notes = await fetchNotesAction(course)
 
     return (
@@ -12,7 +13,7 @@ export default async function NotesPage({ params }: {params: Promise<{course: st
         <div className="max-w-7xl mx-auto md:px-6 lg:px-8">
           <div className="lg:mb-10 md:mb-8 mb-4">
             <h1 className="lg:text-3xl text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-              {course.charAt(0).toUpperCase() + course.slice(1)} Notes
+              {courseNameDecoded.charAt(0).toUpperCase() + courseNameDecoded.slice(1)} Notes
             </h1>
             <p className="mt-2 text-md text-zinc-600 dark:text-zinc-400">
               Your lecture notes and materials
