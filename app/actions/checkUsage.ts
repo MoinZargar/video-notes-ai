@@ -83,7 +83,7 @@ export async function checkUsage(usageType: usageType) {
         else currentCount = usageRecord?.chatCount || 0
 
         // 8. If limit reached, deny access
-        if (currentCount >= 2) {
+        if (currentCount >= 4) {
             return {
                 allowed: false,
                 message: `Daily limit reached for ${usageType}. Please try again in ${Math.ceil(24 - hoursDifference)} hours or upgrade.`
