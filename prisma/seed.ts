@@ -9,7 +9,7 @@ async function main() {
     create: {
       name: PlanType.BASIC,
       price: 0,
-      planId: process.env.BASIC_PLAN_ID!,
+      planId: process.env.NEXT_PUBLIC_BASIC_PLAN_ID!,
     }
   });
   // Monthly Plan
@@ -19,7 +19,7 @@ async function main() {
     create: {
       name: PlanType.MONTLY,
       price: 250,
-      planId: process.env.RAZORPAY_MONTHLY_PLAN_ID!,
+      planId: process.env.NEXT_PUBLIC_RAZORPAY_MONTHLY_PLAN_ID!,
     }
   });
 
