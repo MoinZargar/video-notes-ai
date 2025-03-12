@@ -3,7 +3,7 @@ import { videoNotesModel } from "@/lib/config/videoNotesAI";
 import { fileManager, pdfNotesModel } from "./config/pdfNotesAI";
 
 
-export const generateVideoNotes = async (transcript: string[] | undefined):Promise<string>  => {
+export const generateNotesFromVideo = async (transcript: string[] | undefined):Promise<string>  => {
     try {
         const input = transcript ? transcript : ""
         const result = await videoNotesModel.generateContent(input);

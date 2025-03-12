@@ -139,7 +139,7 @@ export const authOptions: NextAuthOptions = {
               });
 
               const plan = await db.plan.findUnique({
-                where: { planId: process.env.BASIC_PLAN_ID! },
+                where: { planId: process.env.NEXT_PUBLIC_BASIC_PLAN_ID! },
               });
 
               //intialize the subscription and daily usage models
