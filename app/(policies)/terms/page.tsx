@@ -1,7 +1,7 @@
 import { NextPage } from "next"
 import Head from "next/head"
 import Footer from "@/components/Footer"
-import Header from "@/components/Header" // assuming you have a Navbar component
+import Header from "@/components/Header" 
 
 const TermsPage: NextPage = () => {
   return (
@@ -63,10 +63,7 @@ const TermsPage: NextPage = () => {
             <li className="mb-2">We reserve the right to suspend or terminate your access if you violate any terms or engage in unlawful activities.</li>
           </ul>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">7. Governing Law</h2>
-          <ul className="list-disc pl-6 mb-4">
-            <li className="mb-2">These Terms and Conditions are governed by the laws of India. Any disputes shall be resolved in the courts of India.</li>
-          </ul>
+  
         </div>
       </main>
       

@@ -8,14 +8,15 @@ export async function POST(req: Request) {
   const { planId } = await req.json();
 
   try {
-    const session=await getServerSession(authOptions)
-    if (!session) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-    const userId = Number(session?.user?.id)
+    // const session=await getServerSession(authOptions)
+    // if (!session) {
+    //   return NextResponse.json(
+    //     { error: 'Unauthorized' },
+    //     { status: 401 }
+    //   );
+    // }
+     const userId = 1
+    // Number(session?.user?.id)
     // Get plan details
     const plan = await db.plan.findUnique({
       where: { planId: planId },
@@ -34,6 +35,7 @@ export async function POST(req: Request) {
       const startDate = subscription.start_at ? new Date(subscription.start_at * 1000) : new Date();
       const endDate = subscription.end_at ? new Date(subscription.end_at * 1000) : null;
       paymentUrl=subscription.short_url
+      console.log(paymentUrl)
       // Create subscription record
       await tx.subscription.update({
         where: {

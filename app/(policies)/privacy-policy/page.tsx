@@ -56,16 +56,7 @@ const PrivacyPolicyPage: NextPage = () => {
             of our service and help us understand how you interact with our website.
           </p>
           
-          <h2 className="text-xl font-semibold mt-8 mb-4">6. Contact Information</h2>
-          <p className="mb-2">
-            If you have any questions or concerns about our Privacy Policy, please contact us:
-          </p>
-          <p className="mb-6">
-            <strong>Email:</strong> moinbashir2019@gmail.com<br />
-            <strong>Phone:</strong> +916005812088<br />
-            <strong>Address:</strong> House No. 88, Ward No. 8, Chinar Gali, Kishtwar, Jammu and Kashmir, India
-          </p>
-          
+         
           <div className="bg-gray-100 p-6 rounded-lg mt-8">
             <p className="text-sm text-gray-600 italic">
               This privacy policy was last updated on February 24, 2025 and applies to all users of the AI Notes service.

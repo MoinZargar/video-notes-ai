@@ -38,15 +38,6 @@ const RefundPolicyPage: NextPage = () => {
             <li className="mb-2">NotesAI reserves the right to modify pricing, features, or plans at any time. </li>
           </ul>
           
-          <div className="mt-8 border-t border-gray-200 pt-6">
-            <p className="text-gray-600">
-              If you have any questions about our cancellation and refund policy, please contact us at:
-            </p>
-            <p className="mt-2">
-              <strong>Email:</strong> moinbashir2019@gmail.com<br />
-              <strong>Phone:</strong> +916005812088
-            </p>
-          </div>
         </div>
       </main>
       
