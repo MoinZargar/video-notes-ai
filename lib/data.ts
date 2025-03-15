@@ -5,7 +5,7 @@ export const headerData = {
     { name: "Features", href: "#features" },
     { name: "How It Works", href: "#how-it-works" },
     { name: "FAQ", href: "#faq" },
-    { name: "Contact us", href: "#contact" },
+    // { name: "Contact us", href: "#contact" },
   ],
   authItems: [
     { name: "Signup", href: "/signup" },
