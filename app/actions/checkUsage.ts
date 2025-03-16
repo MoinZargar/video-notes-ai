@@ -2,7 +2,6 @@ import db from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { SubscriptionStatus } from '@prisma/client';
-import { union } from 'zod';
 
 type usageType = 'video' | 'pdf' | 'chat'
 
@@ -83,7 +82,7 @@ export async function checkUsage(usageType: usageType) {
         else currentCount = usageRecord?.chatCount || 0
 
         // 8. If limit reached, deny access
-        if (currentCount >= 10) {
+        if (currentCount >= 2) {
             return {
                 allowed: false,
                 message: `Daily limit reached for ${usageType}. Please try again in ${Math.ceil(24 - hoursDifference)} hours or upgrade.`

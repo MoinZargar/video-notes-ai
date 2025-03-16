@@ -17,7 +17,6 @@ interface NotesViewerProps {
 
 export default function NotesViewer({ notes, course }: NotesViewerProps) {
   const [openChat, setOpenChat] = useState<boolean>(false)
-  const reversedNotes = [...notes].reverse()
   const [isDownloading, setIsDownloading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -34,7 +33,7 @@ export default function NotesViewer({ notes, course }: NotesViewerProps) {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      {reversedNotes.map((note: Notes, index: number) => (
+      {notes.map((note: Notes, index: number) => (
         <Card
           key={note.id}
           className="bg-white dark:bg-zinc-900 border-0 shadow-md hover:shadow-lg transition-all duration-200"
