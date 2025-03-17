@@ -1,18 +1,11 @@
 import { chatModel, generationConfig } from "@/lib/config/chatAI";
 import { ChatMessage } from "@/types/chat";
-import { chatPrompt } from "@/lib/constants";
 
 export const chatBot = async (message: string, history: ChatMessage[]): Promise<string> => {
     try {
         const chatSession = chatModel.startChat({
             generationConfig,
             history:[
-                {
-                    role: "user",
-                    parts: [
-                        { text: chatPrompt },
-                    ],
-                },
                 ...history,
             ]
         });

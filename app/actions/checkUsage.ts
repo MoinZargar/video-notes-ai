@@ -23,20 +23,20 @@ export async function checkUsage(usageType: usageType) {
         if (!subscription) {
             return { allowed: false, message: "No subscription found" }
         }
-    
+
         // 3. If user has active subscription, allow unlimited usage
         if (subscription.status === SubscriptionStatus.active) {
             // Increment usage count
-        await db.dailyUsage.update({
-            where: {
-                subscriptionId: subscription?.id
-            },
-            data: {
-                [`${usageType}Count`]: {
-                    increment: 1
+            await db.dailyUsage.update({
+                where: {
+                    subscriptionId: subscription?.id
+                },
+                data: {
+                    [`${usageType}Count`]: {
+                        increment: 1
+                    }
                 }
-            }
-        })
+            })
             return { allowed: true, message: "Unlimited usage with premium monthly subscription" }
         }
 
@@ -75,17 +75,19 @@ export async function checkUsage(usageType: usageType) {
                 }
             })
         }
-        // 7. Otherwise, check current usage count
-        let currentCount = 0
-        if (usageType === 'video') currentCount = usageRecord?.videoCount || 0
-        else if (usageType === 'pdf') currentCount = usageRecord?.pdfCount || 0
-        else currentCount = usageRecord?.chatCount || 0
+        else {
+            // 7. Otherwise, check current usage count
+            let currentCount = 0
+            if (usageType === 'video') currentCount = usageRecord?.videoCount || 0
+            else if (usageType === 'pdf') currentCount = usageRecord?.pdfCount || 0
+            else currentCount = usageRecord?.chatCount || 0
 
-        // 8. If limit reached, deny access
-        if (currentCount >= 2) {
-            return {
-                allowed: false,
-                message: `Daily limit reached for ${usageType}. Please try again in ${Math.ceil(24 - hoursDifference)} hours or upgrade.`
+            // 8. If limit reached, deny access
+            if (currentCount >= 2) {
+                return {
+                    allowed: false,
+                    message: `You have reached your daily limit for ${usageType}. Please try again in ${Math.ceil(24 - hoursDifference)} hours`
+                }
             }
         }
         // 9. Increment usage count
@@ -101,7 +103,7 @@ export async function checkUsage(usageType: usageType) {
         })
         return {
             allowed: true,
-            message: `${usageType} access granted. ${2 - currentCount - 1} uses remaining.`
+            message: `${usageType} access granted.`
         }
     } catch (error) {
         throw (error)
