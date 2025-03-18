@@ -1,3 +1,4 @@
+import { HarmCategory, HarmBlockThreshold, } from "@google/generative-ai";
 import { ChatWindowSizeType } from '@/types/chat'
 import { PdfStyle } from '@/types/pdf';
 
@@ -103,6 +104,26 @@ Instructions:
 11. Explain concepts with examples and use cases when provided in the PDF.
 12. Break down complex topics into digestible sections while maintaining technical accuracy.
 13. Do not include any introductory text or meta-commentary.`
+
+export const safetySettings = [
+  {
+    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  },
+];
+
 
 
 export const chatWindowSizes: Record<string, ChatWindowSizeType> = {
