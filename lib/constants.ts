@@ -10,7 +10,7 @@ Strictly follow this exact structure for the response:
 3. Use bullet points ("-") for key points where appropriate.
 4. Format mathematical formulas if present in markdown format
 Instructions:
-1. Doesn't matter the lanaguage of the transcript, always generate response in english language.
+1. Regardless of the transcript's language, always generate the response in English language.
 2. Write thorogh explanations and definitions in well-structured paragraphs that fully explore each concept.
 3. Ensure comprehensive coverage of all topics and subtopics from the transcript.
 4. Always generate response in english language
