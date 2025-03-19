@@ -13,11 +13,25 @@ export const metadata: Metadata = {
   keywords: 'YouTube to notes, video to notes converter, PDF to notes, handwritten notes converter, lecture notes generator, AI notes maker, YouTube lecture notes, online study notes, video summarizer, educational video notes, AI study assistant, YouTube summary tool, study material generator, video lecture summary, academic notes creator, PDF document summary',
   metadataBase: new URL('https://aifornotes.com'),
   openGraph: {
-    title: 'AIforNotes - YouTube Video & PDF to Study Notes Converter',
+    title: 'AIforNotes - YouTube Videos to Study Notes Converter',
     description: 'Transform YouTube videos and PDF documents into comprehensive study notes. AI-powered note generation, summaries, and concept explanations for better learning.',
     url: 'https://aifornotes.com',
     type: 'website',
-  }
+    images: [
+      {
+        url: '/og_image.png',
+        width: 1200,
+        height: 630,
+        alt: 'AI for Notes - YouTube Video & PDF to Study Notes Converter',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI for Notes - YouTube Videos to Study Notes Converter',
+    description: 'Transform YouTube videos and PDF documents into comprehensive study notes with AI.',
+    images: ['/og_image.png'], 
+  },
 }
 
 export default async function Home() {
