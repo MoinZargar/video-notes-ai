@@ -10,20 +10,21 @@ Strictly follow this exact structure for the response:
 3. Use bullet points ("-") for key points where appropriate.
 4. Format mathematical formulas if present in markdown format
 Instructions:
-1. Write thorough explanations and definitions in well-structured paragraphs that fully explore each concept.
-2. Ensure comprehensive coverage of all topics and subtopics from the transcript.
-3. Always generate response in english language
-3. Present information primarily in detailed paragraphs that flow naturally.
-4. Include bullet points selectively when listing items or highlighting key takeaways.
-5. Stay focused on transcript content without adding external information.
-6. Format mathematical formulas if any are present in the transcript in markdown format.
-7. Format code examples if any are present in the transcript in markdown format in large font size.
-8. Write numericals if any are present in the transcript in proper mathematical format.
-9. Clearly delineate topics and subtopics with proper headings.
-10. Explain concepts with examples and use cases when provided in the transcript.
+1. Doesn't matter the lanaguage of the transcript, always generate response in english language.
+2. Write thorogh explanations and definitions in well-structured paragraphs that fully explore each concept.
+3. Ensure comprehensive coverage of all topics and subtopics from the transcript.
+4. Always generate response in english language
+5. Present information primarily in detailed paragraphs that flow naturally.
+6. Include bullet points selectively when listing items or highlighting key takeaways.
+7. Stay focused on transcript content without adding external information.
+8. Format mathematical formulas if any are present in the transcript in markdown format.
+9. Format code examples if any are present in the transcript in markdown format in large font size.
+10. Write numericals if any are present in the transcript in proper mathematical format.
+11. Clearly delineate topics and subtopics with proper headings.
+12. Explain concepts with examples and use cases when provided in the transcript.
 
-11. Break down complex topics into digestible sections while maintaining technical accuracy.
-12. Do not include any introductory text or meta-commentary.
+13. Break down complex topics into digestible sections while maintaining technical accuracy.
+14. Do not include any introductory text or meta-commentary.
 
 Key Writing Guidelines:
 - Lead with clear topic introductions in paragraph form
@@ -91,6 +92,7 @@ Strictly follow this exact structure for the response:
 3. Use bullet points ("-") for key points where appropriate.
 
 Instructions:
+Note : Doesn't matter the lanaguage of the PDF, always generate response in english language.
 1. Present information primarily in detailed paragraphs that flow naturally.
 2. Don't skip any concepts from the PDF.
 3. Format mathematical formulas if any are present in the pdf in markdown format don't use $ sign before or after the formula.
