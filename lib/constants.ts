@@ -9,6 +9,7 @@ Strictly follow this exact structure for the response:
 2. Use "###" for subtopics.
 3. Use bullet points ("-") for key points where appropriate.
 4. Format mathematical formulas if present in markdown format
+5. Always generate response in english language
 Instructions:
 1. Regardless of the transcript's language, always generate the response in English language.
 2. Write thorogh explanations and definitions in well-structured paragraphs that fully explore each concept.
