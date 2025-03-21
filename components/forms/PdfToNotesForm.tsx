@@ -68,7 +68,6 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
         blobUrl: newBlob.url,
         course: values.course,
       })
-      console.log(notesResponse)
       onClose();
       router.push(`/notes/${values.course}`)
     } catch (error: any) {

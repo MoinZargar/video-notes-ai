@@ -8,15 +8,26 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   try {
     const session = await getServerSession(authOptions);
-    const userId =session?.user?.id;
+    const userId = session?.user?.id;
+    if(!session || !userId){
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const jsonResponse = await handleUpload({
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
-        // Generate a token for the client to upload the file
+
+        // Strict authentication check
+        if (!session || !session.user || !session.user.id) {
+          throw new Error('Unauthorized upload attempt');
+        }
+
+        const controlledPathname = `users/${session.user.id}/${Date.now()}-${pathname}`;
+
         return {
-          allowedContentTypes: ['application/pdf'], 
-          tokenPayload: JSON.stringify({userId}), 
+          pathname: controlledPathname,
+          allowedContentTypes: ['application/pdf'],
+          tokenPayload: JSON.stringify({ userId: session.user.id }),
         };
       },
       onUploadCompleted: async ({ blob }) => {
