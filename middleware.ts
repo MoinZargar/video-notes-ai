@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 
-
 const protectedRoutes = [
   '/dashboard',
   '/notes',
+  '/api/chat',
+  '/api/transcribe',
+  '/api/notes/pdf',
+  '/api/notes/video',
+  '/api/upload/pdf'
 ]
-
 
 const authRoutes = [
   '/signin',
@@ -38,8 +41,17 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next()
 }
 
-// Configuration to specify which routes the middleware should run on
-
 export const config = {
-  matcher: ['/signup','/signin','/dashboard','/notes','/notes/:path*']
+  matcher: [
+    '/signup',
+    '/signin',
+    '/dashboard',
+    '/notes',
+    '/notes/:path*',
+    '/api/chat',
+    '/api/transcribe',
+    '/api/notes/pdf',
+    '/api/notes/video',
+    '/api/upload/pdf'
+  ]
 }

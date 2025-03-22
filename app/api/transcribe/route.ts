@@ -3,7 +3,6 @@ import { transcribeVideo } from '@/lib/transcribe';
 import { TranscribeRequestBody } from '@/types/transcribe';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { checkUsage } from '@/app/actions/checkUsage';
 
 export async function POST(req: Request): Promise<NextResponse> {
   try {
@@ -11,18 +10,13 @@ export async function POST(req: Request): Promise<NextResponse> {
     const { videoUrl } = body;
     const session = await getServerSession(authOptions);
 
-    if (!session) {
+    if (!session || !session.user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
     
-    const dailyUsage = await checkUsage('video')
-    if (!dailyUsage.allowed) {
-      return NextResponse.json({ error: dailyUsage.message }, { status: 402 })
-    }
-
     if (!videoUrl) {
       return NextResponse.json(
         { error: 'Video URL is required' },

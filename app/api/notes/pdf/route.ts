@@ -11,7 +11,7 @@ export async function POST(req: Request): Promise<NextResponse> {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session) {
+    if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     const dailyUsage = await checkUsage('pdf')
