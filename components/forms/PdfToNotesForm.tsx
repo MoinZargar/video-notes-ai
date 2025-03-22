@@ -75,6 +75,10 @@ export default function PdfToNotesForm({ isOpen, onClose, courses }: PdfNotesFor
       const message=error?.response?.data?.error
       setGlobalError(message || "Something went wrong. Please try again.");
     }
+    finally {
+      setSelectedFile(null);
+      form.reset();
+    }
   };
 
   return (
