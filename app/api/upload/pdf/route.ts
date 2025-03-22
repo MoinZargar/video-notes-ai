@@ -5,9 +5,8 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
-
+  const session = await getServerSession(authOptions);
   try {
-    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     if(!session || !userId){
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -41,5 +40,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       { error: (error as Error).message },
       { status: 400 }
     );
+  }
+  finally {
+    console.log("user ", session?.user?.email)
   }
 }

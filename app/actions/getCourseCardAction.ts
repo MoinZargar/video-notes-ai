@@ -4,9 +4,8 @@ import  db  from "@/lib/prisma";
 import { CourseWithNotesCount } from "@/types/course";
 
 export default async function getCourseCardAction(): Promise<CourseWithNotesCount[] | undefined>{
+    const session = await getServerSession(authOptions)
     try {
-        const session = await getServerSession(authOptions)
-    
         if (!session?.user) {
             throw new Error("Unauthorized request")
         }
@@ -27,5 +26,8 @@ export default async function getCourseCardAction(): Promise<CourseWithNotesCoun
         
     } catch (error) {
         throw error;
+    }
+    finally {
+        console.log("User ", session?.user?.email)
     }
 }

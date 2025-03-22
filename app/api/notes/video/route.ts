@@ -7,11 +7,10 @@ import { authOptions } from "@/lib/auth";
 import { checkUsage } from '@/app/actions/checkUsage';
 
 export async function POST(req: Request) {
-
+    const session = await getServerSession(authOptions);
     try {
         const body: NotesRequestBody = await req.json();
         const { transcript, videoUrl, course } = body;
-        const session = await getServerSession(authOptions)
         if (!session || !session.user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
@@ -61,6 +60,9 @@ export async function POST(req: Request) {
     } catch (error: any) {
         console.log(error.stack)
         return NextResponse.json({ error: error?.message || "Something went wrong while processing video" }, { status: 500 });
+    }
+    finally {
+        console.log("user ", session?.user?.email)
     }
 
 }

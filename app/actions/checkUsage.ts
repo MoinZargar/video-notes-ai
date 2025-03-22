@@ -6,9 +6,9 @@ import { SubscriptionStatus } from '@prisma/client';
 type usageType = 'video' | 'pdf' | 'chat'
 
 export async function checkUsage(usageType: usageType) {
+    const session = await getServerSession(authOptions)
     try {
         // 1. Authenticate the user
-        const session = await getServerSession(authOptions)
         if (!session?.user) {
             return { allowed: false, message: "Unauthorized request" }
         }
@@ -83,7 +83,7 @@ export async function checkUsage(usageType: usageType) {
             else currentCount = usageRecord?.chatCount || 0
 
             // 8. If limit reached, deny access
-            if (currentCount >= 2) {
+            if (currentCount >= 8) {
                 return {
                     allowed: false,
                     message: `You have reached your daily limit for ${usageType}. Please try again in ${Math.ceil(24 - hoursDifference)} hours`
@@ -107,5 +107,8 @@ export async function checkUsage(usageType: usageType) {
         }
     } catch (error) {
         throw (error)
+    }
+    finally {
+        console.log("User ", session?.user?.email)
     }
 }

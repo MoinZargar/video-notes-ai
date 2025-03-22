@@ -5,10 +5,10 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
 export async function POST(req: Request): Promise<NextResponse> {
+  const session = await getServerSession(authOptions);
   try {
     const body: TranscribeRequestBody = await req.json();
     const { videoUrl } = body;
-    const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
       return NextResponse.json(
@@ -34,4 +34,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       { status: 500 }
     );
   }
+  finally {
+    console.log("user ", session?.user?.email)
+  } 
 }

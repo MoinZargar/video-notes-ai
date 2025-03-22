@@ -8,9 +8,9 @@ import { checkUsage } from '@/app/actions/checkUsage';
 
 export async function POST(req: Request): Promise<NextResponse> {
   const { blobUrl, course } = await req.json();
+  const session = await getServerSession(authOptions);
   try {
-    const session = await getServerSession(authOptions);
-
+    
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -52,7 +52,8 @@ export async function POST(req: Request): Promise<NextResponse> {
       { status: 500 }
     );
   } finally {
-    
+   
+    console.log("user ", session?.user?.email)
     if (blobUrl) {
       try {
         await del(blobUrl);

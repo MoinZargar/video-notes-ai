@@ -6,8 +6,8 @@ import { getServerSession } from "next-auth";
 import { CreateCourseFormData } from "@/types/forms";
 
 export async function createCourse(values: CreateCourseFormData) {
+    const session = await getServerSession(authOptions);
     try {     
-        const session = await getServerSession(authOptions);
         if (!session?.user) {
             throw new Error("Unauthorized request");
         }
@@ -37,6 +37,9 @@ export async function createCourse(values: CreateCourseFormData) {
     } catch (error:any) {
         console.log(error.stack)
         throw error;
+    }
+    finally {
+        console.log("User ", session?.user?.email)
     }
 
 }
