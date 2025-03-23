@@ -1,5 +1,5 @@
 "use client"
-import { LayoutDashboard, Play, BookOpen, ChevronUp, Upload } from "lucide-react"
+import { LayoutDashboard, Play, BookOpen, ChevronUp, Upload, Mail } from "lucide-react"
 import Link from "next/link"
 import {
   Sidebar,
@@ -27,6 +27,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 import { signOut } from "next-auth/react"
 import  { useRouter } from "next/navigation"
 
@@ -39,6 +48,7 @@ export default function AppSidebar({ initialCourses }: SidebarProps) {
   const courses = useSelector((state: RootState) => state.courses.courses);
   const [isVideoNotesOpen, setIsVideoNotesOpen] = useState<boolean>(false);
   const [isPdfNotesOpen, setIsPdfNotesOpen] = useState<boolean>(false);
+  const [isContactDialogOpen, setIsContactDialogOpen] = useState<boolean>(false);
 
   const router = useRouter();
   
@@ -61,6 +71,10 @@ export default function AppSidebar({ initialCourses }: SidebarProps) {
     } catch (error) {
       console.error("Error signing out:", error);
     }
+  }
+
+  const handleContactEmailClick = () => {
+    window.location.href = "mailto:aifornotes@gmail.com";
   }
 
   return (
@@ -141,6 +155,17 @@ export default function AppSidebar({ initialCourses }: SidebarProps) {
         <SidebarFooter className="border-t border-zinc-800/50 bg-[#0A0A0A]">
           <SidebarMenu>
             <SidebarMenuItem>
+              <SidebarMenuButton 
+                className="w-full justify-start px-6 py-3 text-zinc-200 hover:bg-zinc-800/50 hover:text-white mb-3"
+                onClick={() => setIsContactDialogOpen(true)}
+              >
+                <div className="flex items-center space-x-3">
+                  <Mail className="h-5 w-5" />
+                  <span className="text-base">Contact Us</span>
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="w-full justify-between px-4 py-2 text-white hover:bg-zinc-800/50 hover:text-white">
@@ -177,6 +202,30 @@ export default function AppSidebar({ initialCourses }: SidebarProps) {
         onClose={() => setIsPdfNotesOpen(false)}
         courses={courses}
       />
+
+      <Dialog open={isContactDialogOpen} onOpenChange={setIsContactDialogOpen}>
+        <DialogContent className="max-w-[90%] lg:max-w-[600px] md:max-w-[350px]">
+          <DialogHeader>
+            <DialogTitle>Contact Us</DialogTitle>
+          </DialogHeader>
+          <div className="text-center py-4 px-4 sm:px-6">
+            <p className="text-sm text-muted-foreground">
+              Please feel free to share queries or suggestions or feedback at
+            </p>
+            <p 
+              className="text-blue-500 hover:text-blue-600 cursor-pointer font-medium mt-2"
+              onClick={handleContactEmailClick}
+            >
+              aifornotes@gmail.com
+            </p>
+          </div>
+          <DialogFooter className="sm:justify-center">
+            <DialogClose asChild>
+              <Button type="button" variant="default">Close</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

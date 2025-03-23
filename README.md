@@ -25,8 +25,6 @@ cd video-notes-ai
 DATABASE_URL="postgresql://user:password@db:5432/mydatabase?schema=public"
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=any-random-string
-GEMINI_VIDEO_NOTES_API_KEY=get-it-from-google-ai-studio
-
 
 # OAuth Configuration (Optional)
 GOOGLE_CLIENT_ID=your-google-client-id
