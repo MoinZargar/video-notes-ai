@@ -30,7 +30,6 @@ export default function NotesViewer({ notes, course }: NotesViewerProps) {
       setIsDownloading(false)
     }
   }
-
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       {notes.map((note: Notes, index: number) => (
