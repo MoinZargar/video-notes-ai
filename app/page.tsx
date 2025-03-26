@@ -35,6 +35,14 @@ export const metadata: Metadata = {
     description: 'Transform YouTube videos and PDF documents into comprehensive study notes with AI.',
     images: ['/og_image.png'], 
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true
+    }
+  }
 }
 
 export default async function Home() {

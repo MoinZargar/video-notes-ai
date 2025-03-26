@@ -16,9 +16,45 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Notes AI",
-  description: "Notes AI is a tool that allows you to create notes from YouTube videos.",
-};
+  title: {
+    default: 'NotesAI - Convert YouTube Videos & PDF to Study Notes',
+    template: '%s | NotesAI'
+  },
+  description: 'Convert YouTube video lectures and PDF documents (handwritten & typed) into comprehensive study notes instantly with AIforNotes.',
+  keywords: 'YouTube to notes, video to notes converter, PDF to notes, AI study assistant',
+  metadataBase: new URL('https://aifornotes.com'),
+  alternates: {
+    canonical: 'https://aifornotes.com',
+  },
+  openGraph: {
+    type: 'website',
+    url: 'https://aifornotes.com',
+    title: 'NotesAI - Convert YouTube Videos & PDF to Study Notes',
+    description: 'Transform YouTube videos and PDF documents into comprehensive study notes.',
+    images: [
+      {
+        url: '/og_image.png',
+        width: 1200,
+        height: 630,
+        alt: 'NotesAI - YouTube Video & PDF to Study Notes Converter',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'NotesAI - Convert YouTube Videos & PDF to Study Notes',
+    description: 'Transform YouTube videos and PDF documents into comprehensive study notes.',
+    images: ['/og_image.png'], 
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true
+    }
+  }
+}
 
 export default function RootLayout({
   children,
@@ -42,6 +78,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <meta name="robots" content="index,follow" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
