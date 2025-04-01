@@ -17,11 +17,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'NotesAI - Convert YouTube Videos & PDF to Study Notes',
+    default: 'NotesAI - AI Note Taker for Youtube videos and PDF',
     template: '%s | NotesAI'
   },
   description: 'Convert YouTube video lectures and PDF documents (handwritten & typed) into comprehensive study notes instantly with AIforNotes.',
-  keywords: 'YouTube to notes, video to notes converter, PDF to notes, AI study assistant',
+  keywords: 'AI Note Taker,Note Taker AI, AI Note Taker for Youtube videos, AI Note Taker for PDFs, AI generated study notes, AI Generated study notes, Video to notes , YouTube to notes, video to notes converter, PDF to notes, AI study assistant',
   metadataBase: new URL('https://aifornotes.com'),
   alternates: {
     canonical: 'https://aifornotes.com',
