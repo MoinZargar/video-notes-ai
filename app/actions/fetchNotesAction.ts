@@ -27,7 +27,7 @@ export default async function fetchNotesAction(course: string): Promise<Notes[]>
             orderBy: {
                 createdAt: 'desc'
             },
-            take: 2
+            take: 8
         })
         return notes
     } catch (error) {
