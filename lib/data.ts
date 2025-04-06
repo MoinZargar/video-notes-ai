@@ -1,5 +1,5 @@
 export const headerData = {
-  logo: "NotesAI",
+  logo: "AI Notes",
   menuItems: [
     { name: "Home", href: "/" },
     { name: "Features", href: "#features" },
@@ -94,9 +94,14 @@ export const plansData= [
 
 export const faqData = [
   {
-    question: "What is the accuracy of AI-generated notes from video and PDF sources?",
+    question: "What is AI Note Taker?",
     answer:
-      "AI-generated notes from video and PDF sources are highly accurate. Each concept discussed in the video lecture or PDF document is thoroughly explained in detail, ensuring comprehensive coverage.",
+      "AI Note Taker is an intelligent system that automatically generates comprehensive notes from your educational content, making learning more efficient and organized.",
+  },
+  {
+    question: "What is the accuracy of AI-generated notes from youtube video and PDF sources?",
+    answer:
+      "AI-generated notes from youtube video and PDF sources are highly accurate. Each concept discussed in the video lecture or PDF document is thoroughly explained in detail, ensuring comprehensive coverage.",
   },
   {
     question: "Can I use any YouTube video?",
@@ -114,4 +119,3 @@ export const faqData = [
       "Our AI chatbot uses advanced natural language processing to understand your questions and provide relevant answers based on the content of your notes and additional knowledge sources.",
   },
 ]
-
