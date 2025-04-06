@@ -17,11 +17,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'NotesAI - AI Note Taker for Youtube videos and PDF',
-    template: '%s | NotesAI'
+    default: 'AI Notes - AI Note Taker for Youtube videos and PDF',
+    template: '%s | AI Notes',
   },
   description: 'Convert YouTube video lectures and PDF documents (handwritten & typed) into comprehensive study notes instantly with AIforNotes.',
-  keywords: 'AI Note Taker,Note Taker AI, AI Note Taker for Youtube videos, AI Note Taker for PDFs, AI generated study notes, AI Generated study notes, Video to notes , YouTube to notes, video to notes converter, PDF to notes, AI study assistant',
+  keywords: 'AI Notes, AI Note Taker, Note Taker AI, AI Note Taker for Youtube videos, AI Note Taker for PDFs, AI generated study notes, AI Generated study notes, Video to notes , YouTube to notes, video to notes converter, PDF to notes, AI study assistant',
   metadataBase: new URL('https://aifornotes.com'),
   alternates: {
     canonical: 'https://aifornotes.com',
@@ -29,20 +29,20 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://aifornotes.com',
-    title: 'NotesAI - Convert YouTube Videos & PDF to Study Notes',
+    title: 'AI Notes - Convert YouTube Videos & PDF to Study Notes',
     description: 'Transform YouTube videos and PDF documents into comprehensive study notes.',
     images: [
       {
         url: '/og_image.png',
         width: 1200,
         height: 630,
-        alt: 'NotesAI - YouTube Video & PDF to Study Notes Converter',
+        alt: 'AI Notes - YouTube Video & PDF to Study Notes Converter',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NotesAI - Convert YouTube Videos & PDF to Study Notes',
+    title: 'AI Notes - Convert YouTube Videos & PDF to Study Notes',
     description: 'Transform YouTube videos and PDF documents into comprehensive study notes.',
     images: ['/og_image.png'], 
   },
