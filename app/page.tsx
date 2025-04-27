@@ -8,15 +8,15 @@ import FAQ from "@/components/Faq";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: 'AI Notes - AI Note Taker for Youtube videos and PDF',
+  title: 'NotesAI - Convert YouTube Videos & PDF to Study Notes',
   description: 'Convert YouTube video lectures and PDF documents (handwritten & typed) into comprehensive study notes instantly with AIforNotes. Our AI-powered platform creates detailed notes, summaries, and study materials from educational content. Get smart concept explanations and personalized tutoring support.',
-  keywords: 'AI Notes, AI Note Taker, Note Taker AI, AI Note Taker for Youtube videos, AI Note Taker for PDFs, AI generated study notes, AI For Notes, YouTube to notes, video to notes converter, PDF to notes, handwritten notes converter, lecture notes generator, AI notes maker, YouTube lecture notes, online study notes, video summarizer, educational video notes, AI study assistant, YouTube summary tool, study material generator, video lecture summary, academic notes creator, PDF document summary',
+  keywords: 'NotesAI, AI Notes, AI Note Taker, Note Taker AI, AI Note Taker for Youtube videos, AI Note Taker for PDFs, AI generated study notes, AI For Notes, YouTube to notes, video to notes converter, PDF to notes, handwritten notes converter, lecture notes generator, AI notes maker, YouTube lecture notes, online study notes, video summarizer, educational video notes, AI study assistant, YouTube summary tool, study material generator, video lecture summary, academic notes creator, PDF document summary',
   metadataBase: new URL('https://aifornotes.com'),
   alternates: {
     canonical: 'https://aifornotes.com',
   },
   openGraph: {
-    title: 'AI Notes - YouTube Videos to Study Notes Converter',
+    title: 'NotesAI - YouTube Videos to Study Notes Converter',
     description: 'Transform YouTube videos and PDF documents into comprehensive study notes. AI-powered note generation, summaries, and concept explanations for better learning.',
     url: 'https://aifornotes.com',
     type: 'website',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Notes - YouTube Videos to Study Notes Converter',
+    title: 'NotesAI - YouTube Videos to Study Notes Converter',
     description: 'Transform YouTube videos and PDF documents into comprehensive study notes with AI.',
     images: ['/og_image.png'], 
   },
