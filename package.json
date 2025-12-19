@@ -12,6 +12,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@distube/ytdl-core": "^4.16.12",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/utilities": "^3.2.2",
     "@google/generative-ai": "^0.21.0",
@@ -65,9 +66,11 @@
     "shortid": "^2.2.17",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
+    "youtube-captions-scraper": "^2.0.3",
     "youtube-transcript": "^1.2.1",
     "youtube-transcript-api": "^1.1.2",
-    "youtubei.js": "^13.0.0",
+    "youtube-transcript-plus": "^1.1.1",
+    "youtubei.js": "^16.0.1",
     "zod": "^3.24.1"
   },
   "devDependencies": {
@@ -78,6 +81,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-resizable": "^3.0.8",
+    "@types/youtube-captions-scraper": "^1.0.0",
     "postcss": "^8",
     "prisma": "^6.3.1",
     "tailwindcss": "^3.4.1",
