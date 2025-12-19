@@ -49,7 +49,7 @@
     "lucide-react": "^0.474.0",
     "marked": "^15.0.7",
     "mdpdfmake": "^1.0.8",
-    "next": "15.1.6",
+    "next": "15.1.11",
     "next-auth": "^4.24.11",
     "pdfmake": "^0.2.18",
     "razorpay": "^2.9.6",
