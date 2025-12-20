@@ -2,6 +2,7 @@
 import { videoNotesModel } from "@/lib/config/videoNotesAI";
 import { fileManager, pdfNotesModel } from "./config/pdfNotesAI";
 import { getYouTubeVideoId } from "@/lib/videoId";
+import { transcriptPrompt } from "./constants";
 
 export const generateNotesFromVideo = async (videoUrl: string): Promise<string> => {
     try {
@@ -10,9 +11,18 @@ export const generateNotesFromVideo = async (videoUrl: string): Promise<string> 
         const fullVideoUrl = `https://www.youtube.com/watch?v=${videoId}`;
         
         console.log(`Generating notes from video: ${videoId}`);
+        console.log("yt video url:", fullVideoUrl);
         
         // Generate notes directly from video URL
-        const result = await videoNotesModel.generateContent(fullVideoUrl);
+        const result = await videoNotesModel.generateContent
+        ([
+            {
+                fileData: {
+                fileUri: fullVideoUrl,
+                mimeType: "text/plain",
+                },
+            },
+        ]);
         const notes = result.response.text();
         
         if (!notes || notes.trim().length === 0) {
