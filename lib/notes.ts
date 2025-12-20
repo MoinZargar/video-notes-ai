@@ -1,21 +1,53 @@
 
 import { videoNotesModel } from "@/lib/config/videoNotesAI";
 import { fileManager, pdfNotesModel } from "./config/pdfNotesAI";
+import { getYouTubeVideoId } from "@/lib/videoId";
 
-
-export const generateNotesFromVideo = async (transcript: string[] | undefined):Promise<string>  => {
+export const generateNotesFromVideo = async (videoUrl: string): Promise<string> => {
     try {
-        const input = transcript ? transcript : ""
-        const result = await videoNotesModel.generateContent(input);
+        // Extract video ID and construct full YouTube URL
+        const videoId = getYouTubeVideoId(videoUrl);
+        const fullVideoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        
+        console.log(`Generating notes from video: ${videoId}`);
+        
+        // Generate notes directly from video URL
+        const result = await videoNotesModel.generateContent(fullVideoUrl);
         const notes = result.response.text();
-        if (!notes) {
-            throw new Error("Something went wrong while generating notes")
+        
+        if (!notes || notes.trim().length === 0) {
+            throw new Error("Failed to generate notes from video");
         }
+        
+        console.log(`Successfully generated notes (${notes.length} characters)`);
+        
         return notes;
+        
     } catch (error: any) {
-        console.log("error ",error.stack)
-        console.log(error.errorDetails[1]?.message)
-        throw new Error("Something went wrong while processing video")
+        console.log("Error generating notes:", error.stack);
+        
+        
+        if (error.message?.includes('API key')) {
+            throw new Error('API key is not configured properly');
+        }
+        
+        if (error.message?.includes('quota')) {
+            throw new Error('API quota exceeded. Please try again later.');
+        }
+        
+        if (error.message?.includes('SAFETY')) {
+            throw new Error('Video content was blocked by safety filters');
+        }
+        
+        if (error.message?.includes('token count exceeds')) {
+            throw new Error('Video is too long. Please try a shorter video.');
+        }
+        
+        if (error.errorDetails?.[0]?.message) {
+            console.log("error details:", error.errorDetails[0].message);
+        }
+        
+        throw new Error("Something went wrong while processing video");
     }
 }
 

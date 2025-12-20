@@ -2,30 +2,37 @@ import { HarmCategory, HarmBlockThreshold, } from "@google/generative-ai";
 import { ChatWindowSizeType } from '@/types/chat'
 import { PdfStyle } from '@/types/pdf';
 
-export const videoNotesPrompt = `Generate comprehensive and detailed notes from the following transcript. Provide in-depth explanations for each concept while maintaining the transcript's level of detail and including all provided examples.
+export const videoNotesPrompt = `You are a comprehensive video note generator. Your task is to watch the ENTIRE YouTube video from start to finish and generate detailed, well-structured notes that capture EVERYTHING discussed in the video.
 
-Strictly follow this exact structure for the response:
+CRITICAL REQUIREMENTS:
+1. Watch and analyze the COMPLETE video - do not skip any part
+2. Capture EVERY concept, topic, and detail mentioned in the video
+3. Do NOT summarize or condense - explain everything in full detail
+4. Do NOT skip any sections or topics, no matter how small
+5. Include ALL examples, explanations, definitions, and demonstrations shown
+6. Process the entire video content without missing anything
+
+Strictly follow this exact structure for the notes:
 1. Use "##" for main topics.
 2. Use "###" for subtopics.
 3. Use bullet points ("-") for key points where appropriate.
 4. Format mathematical formulas if present in markdown format
-5. Always generate response in english language
-Instructions:
-1. Regardless of the transcript's language, always generate the response in English language.
-2. Write thorogh explanations and definitions in well-structured paragraphs that fully explore each concept.
-3. Ensure comprehensive coverage of all topics and subtopics from the transcript.
-4. Always generate response in english language
-5. Present information primarily in detailed paragraphs that flow naturally.
-6. Include bullet points selectively when listing items or highlighting key takeaways.
-7. Stay focused on transcript content without adding external information.
-8. Format mathematical formulas if any are present in the transcript in markdown format.
-9. Format code examples if any are present in the transcript in markdown format in large font size.
-10. Write numericals if any are present in the transcript in proper mathematical format.
-11. Clearly delineate topics and subtopics with proper headings.
-12. Explain concepts with examples and use cases when provided in the transcript.
+5. Always generate notes in English language
 
-13. Break down complex topics into digestible sections while maintaining technical accuracy.
-14. Do not include any introductory text or meta-commentary.
+Instructions for Notes:
+1. Regardless of the video's language, always generate the notes in English language.
+2. Write thorough explanations and definitions in well-structured paragraphs that fully explore each concept.
+3. Ensure comprehensive coverage of all topics and subtopics from the transcript.
+4. Present information primarily in detailed paragraphs that flow naturally.
+5. Include bullet points selectively when listing items or highlighting key takeaways.
+6. Stay focused on transcript content without adding external information.
+7. Format mathematical formulas if any are present in the transcript in markdown format.
+8. Format code examples if any are present in the transcript in markdown format in large font size.
+9. Write numericals if any are present in the transcript in proper mathematical format.
+10. Clearly delineate topics and subtopics with proper headings.
+11. Explain concepts with examples and use cases when provided in the transcript.
+12. Break down complex topics into digestible sections while maintaining technical accuracy.
+13. Do not include any introductory text or meta-commentary.
 
 Key Writing Guidelines:
 - Lead with clear topic introductions in paragraph form
@@ -38,7 +45,7 @@ Key Writing Guidelines:
 - Maintain consistent depth of explanation throughout
 - Preserve all technical details from the source material
 
-Here is the transcript: `;
+IMPORTANT: Extract the FULL transcript first, then use that complete transcript to generate detailed notes. Do not skip any content from the video.`;
 
 export const chatPrompt = `Instructions:
 
@@ -105,6 +112,35 @@ Note : Doesn't matter the lanaguage of the PDF, always generate response in engl
 11. Explain concepts with examples and use cases when provided in the PDF.
 12. Break down complex topics into digestible sections while maintaining technical accuracy.
 13. Do not include any introductory text or meta-commentary.`
+
+
+export const transcriptPrompt = `You are a YouTube video transcript extractor. Your ONLY job is to extract and return the complete, unmodified transcript of the video.
+
+CRITICAL INSTRUCTIONS:
+1. Extract the ENTIRE transcript word-for-word from the video
+2. Do NOT skip, summarize, or shorten ANY part of the transcript
+3. Do NOT add any commentary, analysis, or extra information
+4. Do NOT add any introductory or concluding text
+5. Return ONLY the raw transcript text exactly as spoken in the video
+6. Preserve the original language and wording exactly as it appears
+7. Include all repetitions, filler words, and pauses if they exist in the original transcript
+8. Do NOT format the transcript into sections or topics
+9. Do NOT add timestamps
+10. Return the transcript as plain text, one continuous flow
+
+Output Format:
+- Return ONLY the transcript text
+- No headings, no bullets, no formatting
+- Just the raw spoken words from start to finish
+- Separate natural speaking segments with a single line break for readability
+
+Example:
+If the video says: "Hello everyone, welcome to this tutorial. Today we're going to learn about JavaScript. JavaScript is a programming language..."
+
+You return EXACTLY:
+Hello everyone, welcome to this tutorial. Today we're going to learn about JavaScript. JavaScript is a programming language...
+
+Remember: Your job is to be a perfect transcription tool, not a summarizer or analyzer.`;
 
 export const safetySettings = [
   {

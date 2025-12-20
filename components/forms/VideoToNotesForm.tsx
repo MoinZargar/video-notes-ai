@@ -56,16 +56,8 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
         dispatch(addCourse(serializedCourse));
       }
 
-      // Transcribe video
-      const transcriptResponse = await axios.post("/api/transcribe", {
-        videoUrl: values.videoUrl,
-      })
-
-      // Create notes from transcript
-      const response = transcriptResponse.data
-      if (response.success) {
+      // Create notes from video
         const notesResponse = await axios.post("/api/notes/video", {
-          transcript: response.transcript,
           videoUrl: values.videoUrl,
           course: values.course,
         })
@@ -77,7 +69,7 @@ export default function VideoToNotesForm({ isOpen, onClose, courses }: VideoToNo
         } else {
           setGlobalError("Failed to create notes. Please try again.")
         }
-      }
+     
     } catch (error: any) {
       console.log("error  ",error?.response?.data?.error)
       const message=error?.response?.data?.error

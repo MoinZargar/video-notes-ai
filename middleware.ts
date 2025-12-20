@@ -5,7 +5,6 @@ const protectedRoutes = [
   '/dashboard',
   '/notes',
   '/api/chat',
-  '/api/transcribe',
   '/api/notes/pdf',
   '/api/notes/video',
   '/api/upload/pdf'
@@ -49,7 +48,6 @@ export const config = {
     '/notes',
     '/notes/:path*',
     '/api/chat',
-    '/api/transcribe',
     '/api/notes/pdf',
     '/api/notes/video',
     '/api/upload/pdf'
