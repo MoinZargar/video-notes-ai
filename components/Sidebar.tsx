@@ -218,6 +218,9 @@ export default function AppSidebar({ initialCourses }: SidebarProps) {
             >
               aifornotes@gmail.com
             </p>
+            <p className="text-white font-bold mt-2">
+              Built By Moin Zargar || Nit Srinagar
+            </p>
           </div>
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
